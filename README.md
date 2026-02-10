@@ -21,8 +21,8 @@ The project will be a pet shop, where the user can:
 - list pets even by categories
 - new functions will be listed here while developing the project.
 
-## UML diagram
-TODO
+## Class diagram
+![Class Diagram](https://github.com/MeszarosZsombor/MVC-project/blob/master/diagrams/Class_diagram.png)
 
 ## Database schema
 TODO
