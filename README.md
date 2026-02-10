@@ -24,6 +24,9 @@ The project will be a pet shop, where the user can:
 ## UML diagram
 TODO
 
+## Database schema
+TODO
+
 ## Sequence diagrams
 TODO
 
