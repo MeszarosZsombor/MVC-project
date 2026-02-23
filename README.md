@@ -1,7 +1,7 @@
 # MVC-project
 
 ## Description
-This is a project about using Spring Boot + Hibernate + MySQL with Maven, running it inside a Docker. 
+This is a project about using Spring Boot + Hibernate + MySQL with Maven.
 
 I want to deepen my skills and learn more about MVC architecture.
 Spring Boot and Hibernate are new for me.
@@ -22,10 +22,10 @@ The project will be a pet shop, where the user can:
 - new functions will be listed here while developing the project.
 
 ## Class diagram
-![Class Diagram](https://github.com/MeszarosZsombor/MVC-project/blob/master/diagrams/Class_diagram.png)
+![Class Diagram](diagrams/class_diagram.png)
 
 ## Database schema
-TODO
+![database Schema](diagrams/database_schema.png)
 
 ## Sequence diagrams
 TODO
@@ -44,6 +44,13 @@ Run all tests with:
 - Docker
 - Maven (for local build)
 - Java 21 (Corretto)
+
+If you want to start up the database, write the following command in the main folder:
+```` bash
+ docker compose up
+````
+
+### ---- NOT WORKING WITH THIS NOW ----
 
 In the project's main folder run the following command:
 ```` bash
