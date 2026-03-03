@@ -1,7 +1,7 @@
 package com.example.mvc_project.dao.impl;
 
 import com.example.mvc_project.TestDataUtil;
-import com.example.mvc_project.domain.Owner;
+import com.example.mvc_project.domain.PetCategory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -14,23 +14,23 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class OwnerDaoImplTests {
+public class PetCategoryDaoImplTests {
 
     @Mock
     private JdbcTemplate jdbcTemplate;
 
     @InjectMocks
-    private OwnerDaoImpl underTest;
+    private PetCategoryDaoImpl underTest;
 
     @Test
-    public void testThatCreateOwnerGeneratesCorrectSql() {
-        Owner owner = TestDataUtil.createTestOwner();
+    public void testThatCreatePetCategoryGeneratesCorrectSql() {
+        PetCategory petCategory = TestDataUtil.createTestPetCategory();
 
-        underTest.create(owner);
+        underTest.create(petCategory);
 
         verify(jdbcTemplate).update(
-                eq("INSERT INTO owners (owner_id, role, email, password, name) VALUES (?, ?, ?, ?, ?)"),
-                eq(1L), eq("user"), eq("test@email.com"), eq("password"), eq("John Doe")
+                eq("INSERT INTO pet_category (pet_category_id, pet_type) VALUES (?, ?)"),
+                eq(1L), eq("cat")
         );
     }
 
@@ -38,8 +38,8 @@ public class OwnerDaoImplTests {
     public void testThatFindOneGeneratesCorrectSql() {
         underTest.findOne(1L);
         verify(jdbcTemplate).query(
-                eq("SELECT owner_id, role, email, password, name, created_at FROM owners WHERE id = ? LIMIT 1"),
-                ArgumentMatchers.<OwnerDaoImpl.OwnerRowMapper>any(),
+                eq("SELECT pet_category_id, pet_type FROM pet_category WHERE pet_category_id = ? LIMIT 1"),
+                ArgumentMatchers.<PetCategoryDaoImpl.PetCategoryRowMapper>any(),
                 eq(1L)
         );
     }
