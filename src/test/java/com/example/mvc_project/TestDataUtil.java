@@ -1,6 +1,7 @@
 package com.example.mvc_project;
 
 
+import com.example.mvc_project.domain.Adoption;
 import com.example.mvc_project.domain.Owner;
 import com.example.mvc_project.domain.Pet;
 import com.example.mvc_project.domain.PetCategory;
@@ -37,6 +38,14 @@ public final class TestDataUtil {
         return PetCategory.builder()
                 .petCategoryId(1L)
                 .petType("cat")
+                .build();
+    }
+
+    public static Adoption createTestAdoption() {
+        return  Adoption.builder()
+                .adoptionId(2L)
+                .ownerId(1L)
+                .petId(2L)
                 .build();
     }
 }
