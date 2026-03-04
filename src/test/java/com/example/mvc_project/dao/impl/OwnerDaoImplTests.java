@@ -52,4 +52,15 @@ public class OwnerDaoImplTests {
                 ArgumentMatchers.<OwnerDaoImpl.OwnerRowMapper>any()
         );
     }
+
+    @Test
+    public void testThatUpdateGeneratesCorrectSql() {
+        Owner owner = TestDataUtil.createTestOwnerA();
+        underTest.update(owner.getOwnerId(), owner);
+
+        verify(jdbcTemplate).update(
+                "UPDATE owners SET owner_id = ?, role = ?, email = ?, password = ?, name = ? WHERE owner_id = ?",
+                1L, "user", "test@email.com", "password", "John Doe", 1L
+        );
+    }
 }

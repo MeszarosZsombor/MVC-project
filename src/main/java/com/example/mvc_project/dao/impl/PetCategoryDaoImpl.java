@@ -47,6 +47,14 @@ public class PetCategoryDaoImpl implements PetCategoryDao {
         );
     }
 
+    @Override
+    public void update(Long petCategoryId, PetCategory petCategory) {
+        jdbcTemplate.update(
+                "UPDATE pet_category SET pet_category_id = ?, pet_type = ? WHERE pet_category_id = ?",
+                petCategory.getPetCategoryId(), petCategory.getPetType(), petCategoryId
+        );
+    }
+
     public static class PetCategoryRowMapper implements RowMapper<PetCategory> {
 
         @Override

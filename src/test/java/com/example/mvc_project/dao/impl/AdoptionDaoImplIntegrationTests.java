@@ -100,4 +100,33 @@ public class AdoptionDaoImplIntegrationTests {
                 .hasSize(3)
                 .containsExactly(adoptionA, adoptionB, adoptionC);
     }
+
+    @Test
+    public void testThatAdoptionCanBeUpdated() {
+        Owner ownerA = TestDataUtil.createTestOwnerA();
+        ownerDao.create(ownerA);
+
+        PetCategory petCategoryA = TestDataUtil.createTestPetCategoryA();
+        petCategoryDao.create(petCategoryA);
+        PetCategory petCategoryB = TestDataUtil.createTestPetCategoryB();
+        petCategoryDao.create(petCategoryB);
+
+        Pet petA = TestDataUtil.createTestPetA();
+        petA.setPetCategoryId(petCategoryA.getPetCategoryId());
+        petDao.create(petA);
+        Pet petB = TestDataUtil.createTestPetB();
+        petB.setPetCategoryId(petCategoryB.getPetCategoryId());
+        petDao.create(petB);
+
+        Adoption adoptionA = TestDataUtil.createTestAdoptionA();
+        adoptionA.setOwnerId(ownerA.getOwnerId());
+        adoptionA.setPetId(petA.getPetId());
+
+        underTest.create(adoptionA);
+        adoptionA.setPetId(petB.getPetId());
+        underTest.update(adoptionA.getAdoptionId(), adoptionA);
+        Optional<Adoption> result = underTest.findOne(adoptionA.getAdoptionId());
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(adoptionA);
+    }
 }

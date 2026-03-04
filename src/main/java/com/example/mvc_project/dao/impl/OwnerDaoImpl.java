@@ -45,6 +45,14 @@ public class OwnerDaoImpl implements OwnerDao {
         );
     }
 
+    @Override
+    public void update(long ownerId, Owner owner) {
+        jdbcTemplate.update(
+                "UPDATE owners SET owner_id = ?, role = ?, email = ?, password = ?, name = ? WHERE owner_id = ?",
+                owner.getOwnerId(), owner.getRole(), owner.getEmail(), owner.getPassword(), owner.getName(), ownerId
+        );
+    }
+
     public static class OwnerRowMapper implements RowMapper<Owner> {
 
         @Override

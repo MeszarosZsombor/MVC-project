@@ -11,4 +11,6 @@ public interface OwnerDao {
     Optional<Owner> findOne(long l);
 
     List<Owner> find();
+
+    void update(long ownerId, Owner owner);
 }

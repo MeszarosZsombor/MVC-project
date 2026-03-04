@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.Locale;
+
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -50,6 +52,17 @@ public class PetDaoImplTests {
         verify(jdbcTemplate).query(
                 eq("SELECT pet_id, pet_name, weight, age, gender, pet_category_id, adopted FROM pets"),
                 ArgumentMatchers.<PetDaoImpl.PetRowMapper>any()
+        );
+    }
+
+    @Test
+    public void testThatUpdateGeneratesCorrectSql() {
+        Pet pet = TestDataUtil.createTestPetA();
+        underTest.update(pet.getPetId(), pet);
+
+        verify(jdbcTemplate).update(
+          "UPDATE pets SET pet_id = ?, pet_name = ?, weight = ?, age = ?, gender = ?, pet_category_id = ?, adopted = ? WHERE pet_id = ?",
+          1L, "Gato", 10, 3, "M", 1L, true, 1L
         );
     }
 }

@@ -52,4 +52,15 @@ public class OwnerDaoImplIntegrationTests {
                 .hasSize(4)
                 .containsExactly(ownerA, ownerB, ownerC, ownerD);
     }
+
+    @Test
+    public void testThatOwnerCanBeUpdated() {
+        Owner ownerA = TestDataUtil.createTestOwnerA();
+        underTest.create(ownerA);
+        ownerA.setName("UPDATED");
+        underTest.update(ownerA.getOwnerId(), ownerA);
+        Optional<Owner> result = underTest.findOne(ownerA.getOwnerId());
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(ownerA);
+    }
 }

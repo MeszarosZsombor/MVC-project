@@ -52,4 +52,14 @@ public class PetCategoryDaoImplTests {
                 ArgumentMatchers.<PetCategoryDaoImpl.PetCategoryRowMapper>any()
         );
     }
+
+    @Test
+    public void testThatUpdateGeneratesCorrectSql() {
+        PetCategory petCategory = TestDataUtil.createTestPetCategoryA();
+        underTest.update(petCategory.getPetCategoryId(), petCategory);
+        verify(jdbcTemplate).update(
+                "UPDATE pet_category SET pet_category_id = ?, pet_type = ? WHERE pet_category_id = ?",
+                1L, "cat", 1L
+        );
+    }
 }

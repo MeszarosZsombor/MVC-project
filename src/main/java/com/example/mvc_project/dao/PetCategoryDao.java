@@ -12,4 +12,6 @@ public interface PetCategoryDao {
     Optional<PetCategory> findOne(long petCategoryId);
 
     List<PetCategory> find();
+
+    void update(Long petCategoryId, PetCategory petCategory);
 }

@@ -12,4 +12,6 @@ public interface PetDao {
     Optional<Pet> findOne(long l);
 
     List<Pet> find();
+
+    void update(Long petId, Pet pet);
 }

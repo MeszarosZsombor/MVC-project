@@ -52,4 +52,15 @@ public class AdoptionDaoImplTests {
                 ArgumentMatchers.<AdoptionDaoImpl.AdoptionRowMapper>any()
         );
     }
+
+    @Test
+    public void testThatUpdateGeneratesCorrectSql() {
+        Adoption adoption = TestDataUtil.createTestAdoptionA();
+        underTest.update(adoption.getAdoptionId(), adoption);
+
+        verify(jdbcTemplate).update(
+                "UPDATE adoptions SET adoption_id = ?, owner_id = ?, pet_id = ? WHERE adoption_id = ?",
+                1L, 1L, 2L, 1L
+        );
+    }
 }

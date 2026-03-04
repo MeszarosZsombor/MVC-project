@@ -46,6 +46,14 @@ public class PetDaoImpl implements PetDao {
         );
     }
 
+    @Override
+    public void update(Long petId, Pet pet) {
+        jdbcTemplate.update(
+                "UPDATE pets SET pet_id = ?, pet_name = ?, weight = ?, age = ?, gender = ?, pet_category_id = ?, adopted = ? WHERE pet_id = ?",
+                pet.getPetId(), pet.getPetName(), pet.getWeight(), pet.getAge(), pet.getGender(), pet.getPetCategoryId(), pet.getAdopted(), petId
+        );
+    }
+
     public static class PetRowMapper implements RowMapper<Pet> {
 
         @Override

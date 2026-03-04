@@ -71,4 +71,19 @@ public class PetDaoImplIntegrationTests {
                 .containsExactly(petA, petB, petC);
     }
 
+    @Test
+    public void testThatPetCanBeUpdated() {
+        PetCategory petCategoryA = TestDataUtil.createTestPetCategoryA();
+        petCategoryDao.create(petCategoryA);
+
+        Pet petA = TestDataUtil.createTestPetA();
+        petA.setPetCategoryId(petA.getPetCategoryId());
+        underTest.create(petA);
+        petA.setPetName("Biggg Gatto");
+        underTest.update(petA.getPetId(), petA);
+        Optional<Pet> result = underTest.findOne(petA.getPetId());
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(petA);
+    }
+
 }

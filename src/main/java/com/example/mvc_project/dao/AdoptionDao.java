@@ -12,4 +12,6 @@ public interface AdoptionDao {
     Optional<Adoption> findOne(long adoptionId);
 
     List<Adoption> find();
+
+    void update(Long adoptionId, Adoption adoption);
 }

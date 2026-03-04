@@ -46,6 +46,14 @@ public class AdoptionDaoImpl implements AdoptionDao {
         );
     }
 
+    @Override
+    public void update(Long adoptionId, Adoption adoption) {
+        jdbcTemplate.update(
+                "UPDATE adoptions SET adoption_id = ?, owner_id = ?, pet_id = ? WHERE adoption_id = ?",
+                adoption.getAdoptionId(), adoption.getOwnerId(), adoption.getPetId(), adoptionId
+        );
+    }
+
     public static class AdoptionRowMapper implements RowMapper<Adoption> {
 
         @Override
