@@ -6,14 +6,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class OwnerDaoImplIntegrationTests {
 
     private OwnerDaoImpl underTest;
@@ -25,11 +28,28 @@ public class OwnerDaoImplIntegrationTests {
 
     @Test
     public void testThatOwnerCanBeCreatedAndRecalled() {
-        Owner owner = TestDataUtil.createTestOwner();
+        Owner owner = TestDataUtil.createTestOwnerA();
 
         underTest.create(owner);
         Optional<Owner> result = underTest.findOne(owner.getOwnerId());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(owner);
+    }
+
+    @Test
+    public void testThatMultipleOwnersCanBeCreatedAndRecalled() {
+        Owner ownerA = TestDataUtil.createTestOwnerA();
+        underTest.create(ownerA);
+        Owner ownerB = TestDataUtil.createTestOwnerB();
+        underTest.create(ownerB);
+        Owner ownerC = TestDataUtil.createTestOwnerC();
+        underTest.create(ownerC);
+        Owner ownerD = TestDataUtil.createTestOwnerD();
+        underTest.create(ownerD);
+
+        List<Owner> result = underTest.find();
+        assertThat(result)
+                .hasSize(4)
+                .containsExactly(ownerA, ownerB, ownerC, ownerD);
     }
 }

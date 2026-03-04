@@ -38,6 +38,14 @@ public class AdoptionDaoImpl implements AdoptionDao {
         return results.stream().findFirst();
     }
 
+    @Override
+    public List<Adoption> find() {
+        return jdbcTemplate.query(
+                "SELECT adoption_id, owner_id, pet_id FROM adoptions",
+                new AdoptionRowMapper()
+        );
+    }
+
     public static class AdoptionRowMapper implements RowMapper<Adoption> {
 
         @Override

@@ -7,14 +7,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class PetDaoImplIntegrationTests {
 
     private PetDaoImpl underTest;
@@ -28,14 +31,44 @@ public class PetDaoImplIntegrationTests {
 
     @Test
     public void TestThatPetCanBeCreatedAndRecalled() {
-        PetCategory petCategory = TestDataUtil.createTestPetCategory();
+        PetCategory petCategory = TestDataUtil.createTestPetCategoryA();
         petCategoryDao.create(petCategory);
 
-        Pet pet = TestDataUtil.createTestPet();
-
+        Pet pet = TestDataUtil.createTestPetA();
+        pet.setPetCategoryId(petCategory.getPetCategoryId());
         underTest.create(pet);
         Optional<Pet> result = underTest.findOne(pet.getPetId());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(pet);
     }
+
+    @Test
+    public void TestThatMultiplePetsCanBeCreatedAndRecalled() {
+        PetCategory petCategoryA = TestDataUtil.createTestPetCategoryA();
+        petCategoryDao.create(petCategoryA);
+
+        PetCategory petCategoryB = TestDataUtil.createTestPetCategoryB();
+        petCategoryDao.create(petCategoryB);
+
+        PetCategory petCategoryC = TestDataUtil.createTestPetCategoryC();
+        petCategoryDao.create(petCategoryC);
+
+        Pet petA = TestDataUtil.createTestPetA();
+        petA.setPetCategoryId(petA.getPetCategoryId());
+        underTest.create(petA);
+
+        Pet petB = TestDataUtil.createTestPetB();
+        petB.setPetCategoryId(petB.getPetCategoryId());
+        underTest.create(petB);
+
+        Pet petC = TestDataUtil.createTestPetC();
+        petC.setPetCategoryId(petC.getPetCategoryId());
+        underTest.create(petC);
+
+        List<Pet> result = underTest.find();
+        assertThat(result)
+                .hasSize(3)
+                .containsExactly(petA, petB, petC);
+    }
+
 }

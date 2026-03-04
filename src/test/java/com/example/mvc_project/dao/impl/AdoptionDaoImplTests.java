@@ -24,23 +24,32 @@ public class AdoptionDaoImplTests {
 
     @Test
     public void testThatCreateAdoptionGeneratesCorrectSql() {
-        Adoption adoption = TestDataUtil.createTestAdoption();
+        Adoption adoption = TestDataUtil.createTestAdoptionA();
 
         underTest.create(adoption);
 
         verify(jdbcTemplate).update(
                 eq("INSERT INTO adoptions (adoption_id, owner_id, pet_id) VALUES (?, ?, ?)"),
-                eq(2L), eq(1L), eq(2L)
+                eq(1L), eq(1L), eq(2L)
         );
     }
 
     @Test
     public void testThatFindOneGeneratesCorrectSql() {
-        underTest.findOne(2L);
+        underTest.findOne(1L);
         verify(jdbcTemplate).query(
                 eq("SELECT adoption_id, owner_id, pet_id FROM adoptions WHERE adoption_id = ? LIMIT 1"),
                 ArgumentMatchers.<AdoptionDaoImpl.AdoptionRowMapper>any(),
-                eq(2L)
+                eq(1L)
+        );
+    }
+
+    @Test
+    public void testThatFindAllGeneratesCorrectSql() {
+        underTest.find();
+        verify(jdbcTemplate).query(
+                eq("SELECT adoption_id, owner_id, pet_id FROM adoptions"),
+                ArgumentMatchers.<AdoptionDaoImpl.AdoptionRowMapper>any()
         );
     }
 }

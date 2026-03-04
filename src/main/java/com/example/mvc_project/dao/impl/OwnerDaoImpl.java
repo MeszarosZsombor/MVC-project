@@ -30,11 +30,19 @@ public class OwnerDaoImpl implements OwnerDao {
     @Override
     public Optional<Owner> findOne(long ownerId) {
         List<Owner> results = jdbcTemplate.query(
-                "SELECT owner_id, role, email, password, name, created_at FROM owners WHERE owner_id = ? LIMIT 1",
+                "SELECT owner_id, role, email, password, name FROM owners WHERE owner_id = ? LIMIT 1",
                 new OwnerRowMapper(), ownerId
         );
 
         return results.stream().findFirst();
+    }
+
+    @Override
+    public List<Owner> find() {
+        return jdbcTemplate.query(
+                "SELECT owner_id, role, email, password, name FROM owners",
+                new OwnerRowMapper()
+        );
     }
 
     public static class OwnerRowMapper implements RowMapper<Owner> {

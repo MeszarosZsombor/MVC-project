@@ -24,7 +24,7 @@ public class OwnerDaoImplTests {
 
     @Test
     public void testThatCreateOwnerGeneratesCorrectSql() {
-        Owner owner = TestDataUtil.createTestOwner();
+        Owner owner = TestDataUtil.createTestOwnerA();
 
         underTest.create(owner);
 
@@ -38,9 +38,18 @@ public class OwnerDaoImplTests {
     public void testThatFindOneGeneratesCorrectSql() {
         underTest.findOne(1L);
         verify(jdbcTemplate).query(
-                eq("SELECT owner_id, role, email, password, name, created_at FROM owners WHERE id = ? LIMIT 1"),
+                eq("SELECT owner_id, role, email, password, name FROM owners WHERE owner_id = ? LIMIT 1"),
                 ArgumentMatchers.<OwnerDaoImpl.OwnerRowMapper>any(),
                 eq(1L)
+        );
+    }
+
+    @Test
+    public void testThatFindManyGeneratesCorrectSql() {
+        underTest.find();
+        verify(jdbcTemplate).query(
+                eq("SELECT owner_id, role, email, password, name FROM owners"),
+                ArgumentMatchers.<OwnerDaoImpl.OwnerRowMapper>any()
         );
     }
 }

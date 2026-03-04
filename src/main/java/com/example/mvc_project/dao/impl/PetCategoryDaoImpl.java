@@ -39,6 +39,14 @@ public class PetCategoryDaoImpl implements PetCategoryDao {
         return results.stream().findFirst();
     }
 
+    @Override
+    public List<PetCategory> find() {
+        return jdbcTemplate.query(
+                "SELECT * FROM pet_category",
+                new PetCategoryRowMapper()
+        );
+    }
+
     public static class PetCategoryRowMapper implements RowMapper<PetCategory> {
 
         @Override

@@ -38,6 +38,14 @@ public class PetDaoImpl implements PetDao {
         return results.stream().findFirst();
     }
 
+    @Override
+    public List<Pet> find() {
+        return jdbcTemplate.query(
+                "SELECT pet_id, pet_name, weight, age, gender, pet_category_id, adopted FROM pets",
+                new PetRowMapper()
+        );
+    }
+
     public static class PetRowMapper implements RowMapper<Pet> {
 
         @Override

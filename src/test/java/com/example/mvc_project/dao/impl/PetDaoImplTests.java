@@ -24,23 +24,32 @@ public class PetDaoImplTests {
 
     @Test
     public void testThatCreatePetGeneratesCorrectSql() {
-        Pet pet = TestDataUtil.createTestPet();
+        Pet pet = TestDataUtil.createTestPetA();
 
         underTest.create(pet);
 
         verify(jdbcTemplate).update(
                 eq("INSERT INTO pets (pet_id, pet_name, weight, age, gender, pet_category_id, adopted) VALUES (?, ?, ?, ?, ?, ?, ?)"),
-                eq(2L), eq("Gato"), eq(10), eq(3), eq("M"), eq(1L), eq(true)
+                eq(1L), eq("Gato"), eq(10), eq(3), eq("M"), eq(1L), eq(true)
         );
     }
 
     @Test
     public void testThatFindOneGeneratesCorrectSql() {
-        underTest.findOne(2L);
+        underTest.findOne(1L);
         verify(jdbcTemplate).query(
                 eq("SELECT pet_id, pet_name, weight, age, gender, pet_category_id, adopted FROM pets WHERE pet_id = ? LIMIT 1"),
                 ArgumentMatchers.<PetDaoImpl.PetRowMapper>any(),
-                eq(2L)
+                eq(1L)
+        );
+    }
+
+    @Test
+    public void testThatFindAllGeneratesCorrectSql() {
+        underTest.find();
+        verify(jdbcTemplate).query(
+                eq("SELECT pet_id, pet_name, weight, age, gender, pet_category_id, adopted FROM pets"),
+                ArgumentMatchers.<PetDaoImpl.PetRowMapper>any()
         );
     }
 }

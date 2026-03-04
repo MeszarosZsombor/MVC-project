@@ -24,7 +24,7 @@ public class PetCategoryDaoImplTests {
 
     @Test
     public void testThatCreatePetCategoryGeneratesCorrectSql() {
-        PetCategory petCategory = TestDataUtil.createTestPetCategory();
+        PetCategory petCategory = TestDataUtil.createTestPetCategoryA();
 
         underTest.create(petCategory);
 
@@ -41,6 +41,15 @@ public class PetCategoryDaoImplTests {
                 eq("SELECT pet_category_id, pet_type FROM pet_category WHERE pet_category_id = ? LIMIT 1"),
                 ArgumentMatchers.<PetCategoryDaoImpl.PetCategoryRowMapper>any(),
                 eq(1L)
+        );
+    }
+
+    @Test
+    public void testThatFindAllGeneratesCorrectSql() {
+        underTest.find();
+        verify(jdbcTemplate).query(
+                eq("SELECT * FROM pet_category"),
+                ArgumentMatchers.<PetCategoryDaoImpl.PetCategoryRowMapper>any()
         );
     }
 }
