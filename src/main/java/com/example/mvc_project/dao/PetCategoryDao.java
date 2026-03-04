@@ -14,4 +14,6 @@ public interface PetCategoryDao {
     List<PetCategory> find();
 
     void update(Long petCategoryId, PetCategory petCategory);
+
+    void delete(long petCategoryId);
 }

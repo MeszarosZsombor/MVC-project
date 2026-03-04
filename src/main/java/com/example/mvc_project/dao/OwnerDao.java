@@ -13,4 +13,6 @@ public interface OwnerDao {
     List<Owner> find();
 
     void update(long ownerId, Owner owner);
+
+    void delete(long ownerId);
 }

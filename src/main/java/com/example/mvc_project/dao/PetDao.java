@@ -14,4 +14,6 @@ public interface PetDao {
     List<Pet> find();
 
     void update(Long petId, Pet pet);
+
+    void delete(long petId);
 }

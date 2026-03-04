@@ -86,4 +86,17 @@ public class PetDaoImplIntegrationTests {
         assertThat(result.get()).isEqualTo(petA);
     }
 
+    @Test
+    public void testThatPetCanBeDeleted() {
+        PetCategory petCategoryA = TestDataUtil.createTestPetCategoryA();
+        petCategoryDao.create(petCategoryA);
+
+        Pet petA = TestDataUtil.createTestPetA();
+        petA.setPetCategoryId(petA.getPetCategoryId());
+        underTest.create(petA);
+        underTest.delete(petA.getPetId());
+        Optional<Pet> result = underTest.findOne(petA.getPetId());
+        assertThat(result).isEmpty();
+    }
+
 }

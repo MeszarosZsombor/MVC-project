@@ -65,4 +65,14 @@ public class PetDaoImplTests {
           1L, "Gato", 10, 3, "M", 1L, true, 1L
         );
     }
+
+    @Test
+    public void testThatDeleteGeneratesCorrectSql() {
+        underTest.delete(1L);
+
+        verify(jdbcTemplate).update(
+                "DELETE FROM pets WHERE pet_id = ?",
+                1L
+        );
+    }
 }

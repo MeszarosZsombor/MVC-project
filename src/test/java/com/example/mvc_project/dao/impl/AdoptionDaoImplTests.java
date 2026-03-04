@@ -63,4 +63,14 @@ public class AdoptionDaoImplTests {
                 1L, 1L, 2L, 1L
         );
     }
+
+    @Test
+    public void testThatDeleteGeneratesCorrectSql() {
+        underTest.delete(1L);
+
+        verify(jdbcTemplate).update(
+                "DELETE FROM adoptions WHERE adoption_id = ?",
+                1L
+        );
+    }
 }

@@ -14,4 +14,6 @@ public interface AdoptionDao {
     List<Adoption> find();
 
     void update(Long adoptionId, Adoption adoption);
+
+    void delete(long adoptionId);
 }

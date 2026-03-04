@@ -63,4 +63,14 @@ public class OwnerDaoImplTests {
                 1L, "user", "test@email.com", "password", "John Doe", 1L
         );
     }
+
+    @Test
+    public void testThatDeleteGeneratesCorrectSql() {
+        underTest.delete(1L);
+
+        verify(jdbcTemplate).update(
+                "DELETE FROM owners WHERE owner_id = ?",
+                1L
+        );
+    }
 }

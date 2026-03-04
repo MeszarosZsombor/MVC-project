@@ -54,6 +54,14 @@ public class PetDaoImpl implements PetDao {
         );
     }
 
+    @Override
+    public void delete(long petId) {
+        jdbcTemplate.update(
+                "DELETE FROM pets WHERE pet_id = ?",
+                petId
+        );
+    }
+
     public static class PetRowMapper implements RowMapper<Pet> {
 
         @Override

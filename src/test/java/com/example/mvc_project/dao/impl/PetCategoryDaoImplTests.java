@@ -62,4 +62,14 @@ public class PetCategoryDaoImplTests {
                 1L, "cat", 1L
         );
     }
+
+    @Test
+    public void testThatDeleteGeneratesCorrectSql() {
+        underTest.delete(1L);
+
+        verify(jdbcTemplate).update(
+                "DELETE FROM pet_category WHERE pet_category_id = ?",
+                1L
+        );
+    }
 }

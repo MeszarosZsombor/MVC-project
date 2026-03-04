@@ -129,4 +129,26 @@ public class AdoptionDaoImplIntegrationTests {
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(adoptionA);
     }
+
+    @Test
+    public void testThatAdoptionCanBeDeleted() {
+        Owner ownerA = TestDataUtil.createTestOwnerA();
+        ownerDao.create(ownerA);
+
+        PetCategory petCategoryA = TestDataUtil.createTestPetCategoryA();
+        petCategoryDao.create(petCategoryA);
+
+        Pet petA = TestDataUtil.createTestPetA();
+        petA.setPetCategoryId(petCategoryA.getPetCategoryId());
+        petDao.create(petA);
+
+        Adoption adoptionA = TestDataUtil.createTestAdoptionA();
+        adoptionA.setOwnerId(ownerA.getOwnerId());
+        adoptionA.setPetId(petA.getPetId());
+        underTest.create(adoptionA);
+
+        underTest.delete(adoptionA.getAdoptionId());
+        Optional<Adoption> result = underTest.findOne(adoptionA.getAdoptionId());
+        assertThat(result).isEmpty();
+    }
 }

@@ -53,6 +53,14 @@ public class OwnerDaoImpl implements OwnerDao {
         );
     }
 
+    @Override
+    public void delete(long ownerId) {
+        jdbcTemplate.update(
+                "DELETE FROM owners WHERE owner_id = ?",
+                ownerId
+        );
+    }
+
     public static class OwnerRowMapper implements RowMapper<Owner> {
 
         @Override

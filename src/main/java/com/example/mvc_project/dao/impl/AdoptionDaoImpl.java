@@ -54,6 +54,14 @@ public class AdoptionDaoImpl implements AdoptionDao {
         );
     }
 
+    @Override
+    public void delete(long adoptionId) {
+        jdbcTemplate.update(
+                "DELETE FROM adoptions WHERE adoption_id = ?",
+                adoptionId
+        );
+    }
+
     public static class AdoptionRowMapper implements RowMapper<Adoption> {
 
         @Override

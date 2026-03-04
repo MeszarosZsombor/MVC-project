@@ -63,4 +63,13 @@ public class OwnerDaoImplIntegrationTests {
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(ownerA);
     }
+
+    @Test
+    public void testThatOwnerCanBeDeleted() {
+        Owner ownerA = TestDataUtil.createTestOwnerA();
+        underTest.create(ownerA);
+        underTest.delete(ownerA.getOwnerId());
+        Optional<Owner> result = underTest.findOne(ownerA.getOwnerId());
+        assertThat(result).isEmpty();
+    }
 }
