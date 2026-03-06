@@ -1,5 +1,6 @@
 package com.example.mvc_project.domain;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +12,22 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
+@Table(name = "adoptions")
 public class Adoption {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adoptionId;
-    private Long ownerId;
-    private Long petId;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
+
     private OffsetDateTime adoptionDate;
     private OffsetDateTime updatedAt;
 
