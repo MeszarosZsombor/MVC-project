@@ -72,4 +72,19 @@ public class OwnerRepositoryIntegrationTest {
         Optional<Owner> result = underTest.findById(savedOwner.getOwnerId());
         assertThat(result).isEmpty();
     }
+
+    @Test
+    public void testThatGetOwnersWithRoleUser() {
+        Owner ownerA = TestDataUtil.createTestOwnerA();
+        underTest.save(ownerA);
+        Owner ownerB = TestDataUtil.createTestOwnerB();
+        underTest.save(ownerB);
+        Owner ownerC = TestDataUtil.createTestOwnerC();
+        underTest.save(ownerC);
+        Owner ownerD = TestDataUtil.createTestOwnerD();
+        underTest.save(ownerD);
+
+        Iterable<Owner> result = underTest.roleIs("user");
+        assertThat(result).containsExactly(ownerA, ownerC, ownerD);
+    }
 }
