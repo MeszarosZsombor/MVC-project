@@ -1,16 +1,16 @@
 package com.example.mvc_project;
 
 
-import com.example.mvc_project.domain.Adoption;
-import com.example.mvc_project.domain.Owner;
-import com.example.mvc_project.domain.Pet;
-import com.example.mvc_project.domain.PetCategory;
+import com.example.mvc_project.domain.entities.AdoptionEntity;
+import com.example.mvc_project.domain.entities.OwnerEntity;
+import com.example.mvc_project.domain.entities.PetEntity;
+import com.example.mvc_project.domain.entities.PetCategoryEntity;
 
 public final class TestDataUtil {
     private TestDataUtil(){}
 
-    public static Owner createTestOwnerA() {
-        return Owner.builder()
+    public static OwnerEntity createTestOwnerA() {
+        return OwnerEntity.builder()
                 .role("user")
                 .email("test@email.com")
                 .password("password")
@@ -18,8 +18,8 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static Owner createTestOwnerB() {
-        return Owner.builder()
+    public static OwnerEntity createTestOwnerB() {
+        return OwnerEntity.builder()
                 .role("admin")
                 .email("test22@email.com")
                 .password("password123")
@@ -27,8 +27,8 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static Owner createTestOwnerC() {
-        return Owner.builder()
+    public static OwnerEntity createTestOwnerC() {
+        return OwnerEntity.builder()
                 .role("user")
                 .email("test989@email.com")
                 .password("pas")
@@ -36,8 +36,8 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static Owner createTestOwnerD() {
-        return Owner.builder()
+    public static OwnerEntity createTestOwnerD() {
+        return OwnerEntity.builder()
                 .role("user")
                 .email("test897997@email.com")
                 .password("pwd")
@@ -45,75 +45,75 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static Pet createTestPetA(final PetCategory petCategory) {
-        return Pet.builder()
+    public static PetEntity createTestPetA(final PetCategoryEntity petCategoryEntity) {
+        return PetEntity.builder()
                 .petName("Gato")
                 .weight(10)
                 .age(3)
                 .gender("M")
-                .petCategory(petCategory)
+                .petCategoryEntity(petCategoryEntity)
                 .adopted(true)
                 .build();
     }
 
-    public static Pet createTestPetB(final PetCategory petCategory) {
-        return Pet.builder()
+    public static PetEntity createTestPetB(final PetCategoryEntity petCategoryEntity) {
+        return PetEntity.builder()
                 .petName("Doggo")
                 .weight(15)
                 .age(3)
                 .gender("F")
-                .petCategory(petCategory)
+                .petCategoryEntity(petCategoryEntity)
                 .adopted(true)
                 .build();
     }
 
-    public static Pet createTestPetC(final PetCategory petCategory) {
-        return Pet.builder()
+    public static PetEntity createTestPetC(final PetCategoryEntity petCategoryEntity) {
+        return PetEntity.builder()
                 .petName("Hamsto")
                 .weight(1)
                 .age(1)
                 .gender("M")
-                .petCategory(petCategory)
+                .petCategoryEntity(petCategoryEntity)
                 .adopted(false)
                 .build();
     }
 
-    public static PetCategory createTestPetCategoryA() {
-        return PetCategory.builder()
+    public static PetCategoryEntity createTestPetCategoryA() {
+        return PetCategoryEntity.builder()
                 .petType("cat")
                 .build();
     }
 
-    public static PetCategory createTestPetCategoryB() {
-        return PetCategory.builder()
+    public static PetCategoryEntity createTestPetCategoryB() {
+        return PetCategoryEntity.builder()
                 .petType("dog")
                 .build();
     }
 
-    public static PetCategory createTestPetCategoryC() {
-        return PetCategory.builder()
+    public static PetCategoryEntity createTestPetCategoryC() {
+        return PetCategoryEntity.builder()
                 .petType("hamster")
                 .build();
     }
 
-    public static Adoption createTestAdoptionA(final Owner owner, final Pet pet) {
-        return  Adoption.builder()
-                .owner(owner)
-                .pet(pet)
+    public static AdoptionEntity createTestAdoptionA(final OwnerEntity ownerEntity, final PetEntity petEntity) {
+        return  AdoptionEntity.builder()
+                .ownerEntity(ownerEntity)
+                .petEntity(petEntity)
                 .build();
     }
 
-    public static Adoption createTestAdoptionB(final Owner owner, final Pet pet) {
-        return  Adoption.builder()
-                .owner(owner)
-                .pet(pet)
+    public static AdoptionEntity createTestAdoptionB(final OwnerEntity ownerEntity, final PetEntity petEntity) {
+        return  AdoptionEntity.builder()
+                .ownerEntity(ownerEntity)
+                .petEntity(petEntity)
                 .build();
     }
 
-    public static Adoption createTestAdoptionC(final Owner owner, final Pet pet) {
-        return  Adoption.builder()
-                .owner(owner)
-                .pet(pet)
+    public static AdoptionEntity createTestAdoptionC(final OwnerEntity ownerEntity, final PetEntity petEntity) {
+        return  AdoptionEntity.builder()
+                .ownerEntity(ownerEntity)
+                .petEntity(petEntity)
                 .build();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.mvc_project.domain;
+package com.example.mvc_project.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "pet_categories")
-public class PetCategory {
+public class PetCategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

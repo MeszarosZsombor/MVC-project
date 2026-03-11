@@ -1,10 +1,11 @@
-package com.example.mvc_project.domain;
+package com.example.mvc_project.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
 
@@ -14,7 +15,7 @@ import java.time.OffsetDateTime;
 @Builder
 @Entity
 @Table(name = "owners")
-public class Owner {
+public class OwnerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,8 @@ public class Owner {
     private String email;
     private String password;
     private String name;
+
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 
 }

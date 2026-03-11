@@ -1,4 +1,4 @@
-package com.example.mvc_project.domain;
+package com.example.mvc_project.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 @Builder
 @Entity
 @Table(name = "adoptions")
-public class Adoption {
+public class AdoptionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +22,11 @@ public class Adoption {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private Owner owner;
+    private OwnerEntity ownerEntity;
 
     @ManyToOne
     @JoinColumn(name = "pet_id")
-    private Pet pet;
+    private PetEntity petEntity;
 
     private OffsetDateTime adoptionDate;
     private OffsetDateTime updatedAt;
