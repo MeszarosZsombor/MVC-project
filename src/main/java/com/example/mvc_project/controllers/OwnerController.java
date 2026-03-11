@@ -4,6 +4,8 @@ import com.example.mvc_project.domain.dto.OwnerDto;
 import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.services.OwnerService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +22,10 @@ public class OwnerController {
     }
 
     @PostMapping(path = "/owners")
-    public OwnerDto createOwner(@RequestBody OwnerDto owner) {
+    public ResponseEntity<OwnerDto> createOwner(@RequestBody OwnerDto owner) {
         OwnerEntity ownerEntity = ownerMapper.mapFrom(owner);
         OwnerEntity savedOwnerEntity = ownerService.createOwner(ownerEntity);
-        return ownerMapper.mapTo(savedOwnerEntity);
+        return new ResponseEntity<>(ownerMapper.mapTo(savedOwnerEntity), HttpStatus.CREATED);
     }
 
 }
