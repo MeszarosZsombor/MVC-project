@@ -51,7 +51,7 @@ public final class TestDataUtil {
                 .weight(10)
                 .age(3)
                 .gender("M")
-                .petCategoryEntity(petCategoryEntity)
+                .petCategory(petCategoryEntity)
                 .adopted(true)
                 .build();
     }
@@ -62,7 +62,7 @@ public final class TestDataUtil {
                 .weight(15)
                 .age(3)
                 .gender("F")
-                .petCategoryEntity(petCategoryEntity)
+                .petCategory(petCategoryEntity)
                 .adopted(true)
                 .build();
     }
@@ -73,7 +73,7 @@ public final class TestDataUtil {
                 .weight(1)
                 .age(1)
                 .gender("M")
-                .petCategoryEntity(petCategoryEntity)
+                .petCategory(petCategoryEntity)
                 .adopted(false)
                 .build();
     }
@@ -98,22 +98,22 @@ public final class TestDataUtil {
 
     public static AdoptionEntity createTestAdoptionA(final OwnerEntity ownerEntity, final PetEntity petEntity) {
         return  AdoptionEntity.builder()
-                .ownerEntity(ownerEntity)
-                .petEntity(petEntity)
+                .owner(ownerEntity)
+                .pet(petEntity)
                 .build();
     }
 
     public static AdoptionEntity createTestAdoptionB(final OwnerEntity ownerEntity, final PetEntity petEntity) {
         return  AdoptionEntity.builder()
-                .ownerEntity(ownerEntity)
-                .petEntity(petEntity)
+                .owner(ownerEntity)
+                .pet(petEntity)
                 .build();
     }
 
     public static AdoptionEntity createTestAdoptionC(final OwnerEntity ownerEntity, final PetEntity petEntity) {
         return  AdoptionEntity.builder()
-                .ownerEntity(ownerEntity)
-                .petEntity(petEntity)
+                .owner(ownerEntity)
+                .pet(petEntity)
                 .build();
     }
 }
