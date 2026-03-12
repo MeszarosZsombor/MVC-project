@@ -1,11 +1,13 @@
-package com.example.mvc_project.domain.entities;
+package com.example.mvc_project.domain.dto;
 
-import jakarta.persistence.*;
+import com.example.mvc_project.domain.entities.OwnerEntity;
+import com.example.mvc_project.domain.entities.PetEntity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -15,26 +17,12 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "adoptions")
-public class AdoptionEntity {
+public class AdoptionDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adoptionId;
-
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
     private OwnerEntity owner;
-
-    @ManyToOne
-    @JoinColumn(name = "pet_id")
     private PetEntity pet;
-
-    @CreationTimestamp
     private OffsetDateTime adoptionDate;
-
-    @UpdateTimestamp
     private OffsetDateTime updatedAt;
 
 }

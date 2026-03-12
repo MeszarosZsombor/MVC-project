@@ -105,7 +105,7 @@ public class AdoptionEntityRepositoryIntegrationTests {
 
         AdoptionEntity adoptionEntityA = TestDataUtil.createTestAdoptionA(savedOwnerEntity, savedPetEntityA);
         underTest.save(adoptionEntityA);
-        adoptionEntityA.setPetEntity(savedPetEntityB);
+        adoptionEntityA.setPet(savedPetEntityB);
         AdoptionEntity savedAdoptionEntity = underTest.save(adoptionEntityA);
 
         Optional<AdoptionEntity> result = underTest.findById(savedAdoptionEntity.getAdoptionId());
