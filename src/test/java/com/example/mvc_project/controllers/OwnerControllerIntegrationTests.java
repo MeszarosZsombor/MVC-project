@@ -99,4 +99,48 @@ public class OwnerControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$[0].password").value("password")
         );
     }
+
+    @Test
+    public void testThatGetOwnerSuccessfullyReturnsHttp200WhenOwnerExists() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        ownerService.createOwner(testOwnerEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/owners/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetOwnerSuccessfullyReturnsHttp404WhenNoOwnerExists() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        ownerService.createOwner(testOwnerEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/owners/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatGetOwnerSuccessfullyReturnsOwnerWhenOwnerExists() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        ownerService.createOwner(testOwnerEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/owners/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.ownerId").value(1)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value("John Doe")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.email").value("test@email.com")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.role").value("user")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.password").value("password")
+        );
+    }
 }
