@@ -5,6 +5,10 @@ import com.example.mvc_project.repositories.AdoptionRepository;
 import com.example.mvc_project.services.AdoptionService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class AdoptionServiceImpl implements AdoptionService {
 
@@ -17,5 +21,14 @@ public class AdoptionServiceImpl implements AdoptionService {
     @Override
     public AdoptionEntity createAdoption(AdoptionEntity adoptionEntity) {
         return adoptionRepository.save(adoptionEntity);
+    }
+
+    @Override
+    public List<AdoptionEntity> findAll() {
+        return StreamSupport.stream(adoptionRepository
+                .findAll()
+                .spliterator(),
+                false)
+                .collect(Collectors.toList());
     }
 }

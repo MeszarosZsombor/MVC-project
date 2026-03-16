@@ -6,9 +6,13 @@ import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.services.AdoptionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class AdoptionController {
@@ -26,5 +30,13 @@ public class AdoptionController {
         AdoptionEntity adoptionEntity = adoptionMapper.mapFrom(adoption);
         AdoptionEntity savedAdoptionEntity = adoptionService.createAdoption(adoptionEntity);
         return new ResponseEntity<>(adoptionMapper.mapTo(savedAdoptionEntity), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/adoptions")
+    public List<AdoptionDto> listAdoptions() {
+        List<AdoptionEntity> adoptions = adoptionService.findAll();
+        return adoptions.stream()
+                .map(adoptionMapper::mapTo)
+                .collect(Collectors.toList());
     }
 }
