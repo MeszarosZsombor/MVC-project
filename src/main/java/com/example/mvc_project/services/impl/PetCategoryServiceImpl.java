@@ -6,6 +6,7 @@ import com.example.mvc_project.services.PetCategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,5 +31,10 @@ public class PetCategoryServiceImpl implements PetCategoryService {
                 .spliterator(),
                 false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<PetCategoryEntity> findOne(Long id) {
+        return petCategoryRepository.findById(id);
     }
 }

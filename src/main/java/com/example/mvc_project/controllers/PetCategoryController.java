@@ -7,12 +7,10 @@ import com.example.mvc_project.repositories.PetCategoryRepository;
 import com.example.mvc_project.services.PetCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,5 +37,14 @@ public class PetCategoryController {
         return petCategories.stream()
                 .map(petCategoryMapper::mapTo)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/pet_categories/{id}")
+    public ResponseEntity<PetCategoryDto> getPetCategory(@PathVariable("id") Long id) {
+        Optional<PetCategoryEntity> foundPetCategory = petCategoryService.findOne(id);
+        return foundPetCategory.map(petCategoryEntity -> {
+            PetCategoryDto petCategoryDto = petCategoryMapper.mapTo(petCategoryEntity);
+            return new ResponseEntity<>(petCategoryDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
