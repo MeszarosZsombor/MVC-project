@@ -2,6 +2,7 @@ package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
 import com.example.mvc_project.domain.entities.PetEntity;
+import com.example.mvc_project.services.PetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,13 +22,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 public class PetControllerIntegrationTests {
 
-    public MockMvc mockMvc;
-    public ObjectMapper objectMapper;
+    private PetService petService;
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    public PetControllerIntegrationTests(MockMvc mockMvc) {
+    public PetControllerIntegrationTests(MockMvc mockMvc, PetService petService) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
+        this.petService = petService;
     }
 
     @Test
@@ -65,6 +68,38 @@ public class PetControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.gender").value("F")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.adopted").value(true)
+        );
+    }
+
+    @Test
+    public void testThatListAllPetsSuccesfullyReturnsHttp200() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pets")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListAllPetsSuccesfullyReturnsListOfPets() throws Exception {
+        PetEntity testPetEntity = TestDataUtil.createTestPetB(null);
+        petService.createPet(testPetEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pets")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].petId").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].petName").value("Doggo")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].weight").value(15)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].age").value(3)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].gender").value("F")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].adopted").value(true)
         );
     }
 }
