@@ -71,7 +71,7 @@ public class OwnerControllerIntegrationTests {
     }
 
     @Test
-    public void testThatListOwnersSuccessfullyReturnsHttp200() throws Exception {
+    public void testThatListAllOwnersSuccessfullyReturnsHttp200() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/owners")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +81,7 @@ public class OwnerControllerIntegrationTests {
     }
 
     @Test
-    public void testThatListOwnersSuccessfullyReturnsListOfOwners() throws Exception {
+    public void testThatListAllOwnersSuccessfullyReturnsListOfOwners() throws Exception {
         OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
         ownerService.createOwner(testOwnerEntity);
         mockMvc.perform(

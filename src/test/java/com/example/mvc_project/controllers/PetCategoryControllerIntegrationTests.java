@@ -2,6 +2,7 @@ package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
 import com.example.mvc_project.domain.entities.PetCategoryEntity;
+import com.example.mvc_project.services.PetCategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,17 +22,19 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 public class PetCategoryControllerIntegrationTests {
 
+    private PetCategoryService petCategoryService;
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
     @Autowired
-    public PetCategoryControllerIntegrationTests(MockMvc mockMvc) {
+    public PetCategoryControllerIntegrationTests(MockMvc mockMvc, PetCategoryService petCategoryService) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
+        this.petCategoryService = petCategoryService;
     }
 
     @Test
-    public void testThatCreatePetCategorySuccessfullyReturnsHttp202Created() throws Exception {
+    public void testThatCreatePetCategorySuccessfullyReturnsHttp201Created() throws Exception {
         PetCategoryEntity petCategory = TestDataUtil.createTestPetCategoryA();
         petCategory.setPetCategoryId(null);
         String petCategoryJson = objectMapper.writeValueAsString(petCategory);
@@ -57,6 +60,30 @@ public class PetCategoryControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.petCategoryId").isNumber()
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.petType").value("cat")
+        );
+    }
+
+    @Test
+    public void testThatListAllPetCategoriesSuccessfullyReturnsHttp200() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pet_categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListAllPetCategorySuccessfullyReturnsListOfPetCategory() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        petCategoryService.createPetCategory(testPetCategory);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pet_categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].petCategoryId").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].petType").value("cat")
         );
     }
 }
