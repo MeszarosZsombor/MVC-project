@@ -6,12 +6,10 @@ import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.services.AdoptionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -38,5 +36,14 @@ public class AdoptionController {
         return adoptions.stream()
                 .map(adoptionMapper::mapTo)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/adoptions/{id}")
+    public ResponseEntity<AdoptionDto> getAdoption(@PathVariable("id") Long id) {
+        Optional<AdoptionEntity> foundAdoption = adoptionService.findOne(id);
+        return foundAdoption.map(adoptionEntity -> {
+            AdoptionDto adoptionDto = adoptionMapper.mapTo(adoptionEntity);
+            return new ResponseEntity<>(adoptionDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

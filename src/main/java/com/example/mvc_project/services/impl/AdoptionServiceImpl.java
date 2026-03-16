@@ -6,6 +6,7 @@ import com.example.mvc_project.services.AdoptionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,5 +31,10 @@ public class AdoptionServiceImpl implements AdoptionService {
                 .spliterator(),
                 false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<AdoptionEntity> findOne(Long id) {
+        return adoptionRepository.findById(id);
     }
 }
