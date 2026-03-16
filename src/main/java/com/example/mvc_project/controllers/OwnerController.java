@@ -6,12 +6,10 @@ import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.services.OwnerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -38,5 +36,14 @@ public class OwnerController {
         return owners.stream()
                 .map(ownerMapper::mapTo)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/owners/{id}")
+    public ResponseEntity<OwnerDto> getOwner(@PathVariable("id") Long id) {
+        Optional<OwnerEntity> foundOwner = ownerService.findOne(id);
+        return foundOwner.map(ownerEntity -> {
+            OwnerDto ownerDto = ownerMapper.mapTo(ownerEntity);
+            return new ResponseEntity<>(ownerDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

@@ -6,6 +6,7 @@ import com.example.mvc_project.services.OwnerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,5 +31,10 @@ public class OwnerServiceImpl implements OwnerService {
                 .spliterator(),
                 false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<OwnerEntity> findOne(Long id) {
+        return ownerRepository.findById(id);
     }
 }
