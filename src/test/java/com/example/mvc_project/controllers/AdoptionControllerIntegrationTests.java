@@ -82,4 +82,40 @@ public class AdoptionControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$[0].adoptionId").isNumber()
         );
     }
+
+    @Test
+    public void testThatGetAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        adoptionService.createAdoption(testAdoptionEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/adoptions/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetAdoptionSuccessfullyReturnsHttp404WhenNoAdoptionExists() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        adoptionService.createAdoption(testAdoptionEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/adoptions/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatGetAdoptionSuccessfullyReturnsAdoptionWhenAdoptionExists() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        adoptionService.createAdoption(testAdoptionEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/adoptions/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.adoptionId").value(1)
+        );
+    }
 }
