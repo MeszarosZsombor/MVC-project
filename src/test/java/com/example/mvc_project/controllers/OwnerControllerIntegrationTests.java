@@ -2,6 +2,7 @@ package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
 import com.example.mvc_project.domain.entities.OwnerEntity;
+import com.example.mvc_project.services.OwnerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -22,13 +23,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 public class OwnerControllerIntegrationTests {
 
+    private OwnerService ownerService;
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
     @Autowired
-    public OwnerControllerIntegrationTests(MockMvc mockMvc) {
+    public OwnerControllerIntegrationTests(MockMvc mockMvc, OwnerService ownerService) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
+        this.ownerService = ownerService;
     }
 
     @Test
@@ -64,6 +67,36 @@ public class OwnerControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.role").value("user")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.password").value("password")
+        );
+    }
+
+    @Test
+    public void testThatListOwnersSuccessfullyReturnsHttp200() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/owners")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListOwnersSuccessfullyReturnsListOfOwners() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        ownerService.createOwner(testOwnerEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/owners")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].ownerId").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].name").value("John Doe")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].email").value("test@email.com")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].role").value("user")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].password").value("password")
         );
     }
 }
