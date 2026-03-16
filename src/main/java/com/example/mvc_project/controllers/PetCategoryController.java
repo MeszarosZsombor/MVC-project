@@ -7,9 +7,13 @@ import com.example.mvc_project.repositories.PetCategoryRepository;
 import com.example.mvc_project.services.PetCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PetCategoryController {
@@ -29,4 +33,11 @@ public class PetCategoryController {
         return new ResponseEntity<>(petCategoryMapper.mapTo(savedPetCategoryEntity), HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/pet_categories")
+    public List<PetCategoryDto> listPetCategories() {
+        List<PetCategoryEntity> petCategories = petCategoryService.findAll();
+        return petCategories.stream()
+                .map(petCategoryMapper::mapTo)
+                .collect(Collectors.toList());
+    }
 }
