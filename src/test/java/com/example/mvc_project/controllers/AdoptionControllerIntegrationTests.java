@@ -2,6 +2,7 @@ package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
+import com.example.mvc_project.services.AdoptionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,21 +22,22 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 public class AdoptionControllerIntegrationTests {
 
+    private AdoptionService adoptionService;
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
     @Autowired
-
-    public AdoptionControllerIntegrationTests(MockMvc mockMvc) {
+    public AdoptionControllerIntegrationTests(MockMvc mockMvc, AdoptionService adoptionService) {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
+        this.adoptionService = adoptionService;
     }
 
     @Test
     public void testThatCreateAdoptionSuccessfullyReturnsHttp201Created() throws Exception {
-        AdoptionEntity adoption = TestDataUtil.createTestAdoptionA(null, null);
-        adoption.setAdoptionId(null);
-        String ownerJson = objectMapper.writeValueAsString(adoption);
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        testAdoptionEntity.setAdoptionId(null);
+        String ownerJson = objectMapper.writeValueAsString(testAdoptionEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/adoptions")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -47,15 +49,37 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatCreateAdoptionSuccessfullyReturnsSavedAdoption() throws Exception {
-        AdoptionEntity adoption = TestDataUtil.createTestAdoptionA(null, null);
-        adoption.setAdoptionId(null);
-        String ownerJson = objectMapper.writeValueAsString(adoption);
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        testAdoptionEntity.setAdoptionId(null);
+        String ownerJson = objectMapper.writeValueAsString(testAdoptionEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/adoptions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ownerJson)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.adoptionId").isNumber()
+        );
+    }
+
+    @Test
+    public void testThatListAllAdoptionsSuccessfullyReturnsHttp200() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/adoptions")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListAllAdoptionsSuccessfullyReturnsListOfAdoptions() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        adoptionService.createAdoption(testAdoptionEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/adoptions")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].adoptionId").isNumber()
         );
     }
 }
