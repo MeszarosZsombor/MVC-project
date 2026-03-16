@@ -102,4 +102,50 @@ public class PetControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$[0].adopted").value(true)
         );
     }
+
+    @Test
+    public void testThatGetPetSuccesfullyReturnsHttp200WhenPetExists() throws Exception {
+        PetEntity testPetEntity = TestDataUtil.createTestPetB(null);
+        petService.createPet(testPetEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pets/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetPetSuccesfullyReturnsHttp404WhenNoPetExists() throws Exception {
+        PetEntity testPetEntity = TestDataUtil.createTestPetB(null);
+        petService.createPet(testPetEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pets/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatGetPetSuccesfullyReturnsPetWhenPetExists() throws Exception {
+        PetEntity testPetEntity = TestDataUtil.createTestPetB(null);
+        petService.createPet(testPetEntity);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pets/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petId").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petName").value("Doggo")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.weight").value(15)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.age").value(3)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.gender").value("F")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.adopted").value(true)
+        );
+    }
 }
