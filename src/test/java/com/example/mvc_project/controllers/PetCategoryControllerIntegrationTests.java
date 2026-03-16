@@ -86,4 +86,42 @@ public class PetCategoryControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$[0].petType").value("cat")
         );
     }
+
+    @Test
+    public void testThatGetPetCategorySuccessfullyReturnsHttp200WhenPetCategoryExists() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        petCategoryService.createPetCategory(testPetCategory);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pet_categories/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetPetCategorySuccessfullyReturnsHttp404WhenNoPetCategoryExists() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        petCategoryService.createPetCategory(testPetCategory);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pet_categories/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatGetPetCategorySuccessfullyReturnsPetCategoryWhenPetCategoryExists() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        petCategoryService.createPetCategory(testPetCategory);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pet_categories/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petCategoryId").value(1)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petType").value("cat")
+        );
+    }
 }
