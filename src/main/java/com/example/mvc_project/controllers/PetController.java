@@ -6,9 +6,13 @@ import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.services.PetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PetController {
@@ -28,4 +32,11 @@ public class PetController {
         return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/pets")
+    public List<PetDto> listPets() {
+        List<PetEntity> pets = petService.findAll();
+        return pets.stream()
+                .map(petMapper::mapTo)
+                .collect(Collectors.toList());
+    }
 }
