@@ -1,6 +1,7 @@
 package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
+import com.example.mvc_project.domain.dto.PetCategoryDto;
 import com.example.mvc_project.domain.entities.PetCategoryEntity;
 import com.example.mvc_project.services.PetCategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -122,6 +123,54 @@ public class PetCategoryControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.petCategoryId").value(1)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.petType").value("cat")
+        );
+    }
+
+    @Test
+    public void testThatFullUpdatePetCategorySuccessfullyReturnsHttp200WhenPetCategoryExists() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        PetCategoryEntity savedPetCategory = petCategoryService.save(testPetCategory);
+
+        PetCategoryDto testPetCategoryDto = TestDataUtil.createTestPetCategoryDtoA();
+        String petCategoryJson = objectMapper.writeValueAsString(testPetCategoryDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/pet_categories/" + savedPetCategory.getPetCategoryId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petCategoryJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdatePetCategorySuccessfullyReturnsHttp404WhenNoPetCategoryExists() throws Exception {
+        PetCategoryDto testPetCategoryDto = TestDataUtil.createTestPetCategoryDtoA();
+        String petCategoryJson = objectMapper.writeValueAsString(testPetCategoryDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/pet_categories/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petCategoryJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdatePetCategorySuccessfullyUpdatesPetCategoryWhenPetCategoryExists() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        PetCategoryEntity savedPetCategory = petCategoryService.save(testPetCategory);
+
+        PetCategoryDto testPetCategoryDto = TestDataUtil.createTestPetCategoryDtoB();
+        testPetCategoryDto.setPetCategoryId(savedPetCategory.getPetCategoryId());
+        String petCategoryJson = objectMapper.writeValueAsString(testPetCategoryDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/pet_categories/" + savedPetCategory.getPetCategoryId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petCategoryJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petCategoryId").value(savedPetCategory.getPetCategoryId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petType").value(testPetCategoryDto.getPetType())
         );
     }
 }
