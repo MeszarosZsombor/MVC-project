@@ -20,7 +20,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public OwnerEntity createOwner(OwnerEntity ownerEntity) {
+    public OwnerEntity save(OwnerEntity ownerEntity) {
         return ownerRepository.save(ownerEntity);
     }
 
@@ -36,5 +36,10 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     public Optional<OwnerEntity> findOne(Long id) {
         return ownerRepository.findById(id);
+    }
+
+    @Override
+    public boolean isExists(Long id) {
+        return ownerRepository.existsById(id);
     }
 }

@@ -83,7 +83,7 @@ public class OwnerControllerIntegrationTests {
     @Test
     public void testThatListAllOwnersSuccessfullyReturnsListOfOwners() throws Exception {
         OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
-        ownerService.createOwner(testOwnerEntity);
+        ownerService.save(testOwnerEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/owners")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,7 +103,7 @@ public class OwnerControllerIntegrationTests {
     @Test
     public void testThatGetOwnerSuccessfullyReturnsHttp200WhenOwnerExists() throws Exception {
         OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
-        ownerService.createOwner(testOwnerEntity);
+        ownerService.save(testOwnerEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/owners/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +115,7 @@ public class OwnerControllerIntegrationTests {
     @Test
     public void testThatGetOwnerSuccessfullyReturnsHttp404WhenNoOwnerExists() throws Exception {
         OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
-        ownerService.createOwner(testOwnerEntity);
+        ownerService.save(testOwnerEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/owners/99")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -127,7 +127,7 @@ public class OwnerControllerIntegrationTests {
     @Test
     public void testThatGetOwnerSuccessfullyReturnsOwnerWhenOwnerExists() throws Exception {
         OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
-        ownerService.createOwner(testOwnerEntity);
+        ownerService.save(testOwnerEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/owners/1")
                         .contentType(MediaType.APPLICATION_JSON)

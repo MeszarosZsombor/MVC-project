@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OwnerService {
-    OwnerEntity createOwner(OwnerEntity ownerEntity);
+    OwnerEntity save(OwnerEntity ownerEntity);
 
     List<OwnerEntity> findAll();
 
     Optional<OwnerEntity> findOne(Long id);
+
+    boolean isExists(Long id);
 }
