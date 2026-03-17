@@ -20,7 +20,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public PetEntity createPet(PetEntity petEntity) {
+    public PetEntity save(PetEntity petEntity) {
         return petRepository.save(petEntity);
     }
 
@@ -36,5 +36,10 @@ public class PetServiceImpl implements PetService {
     @Override
     public Optional<PetEntity> findOne(Long id) {
         return petRepository.findById(id);
+    }
+
+    @Override
+    public boolean isExists(Long id) {
+        return petRepository.existsById(id);
     }
 }

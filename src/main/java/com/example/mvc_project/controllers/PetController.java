@@ -26,7 +26,7 @@ public class PetController {
     @PostMapping(path = "/pets")
     public ResponseEntity<PetDto> createPet(@RequestBody PetDto pet) {
         PetEntity petEntity = petMapper.mapFrom(pet);
-        PetEntity savedPetEntity = petService.createPet(petEntity);
+        PetEntity savedPetEntity = petService.save(petEntity);
         return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.CREATED);
     }
 
@@ -45,5 +45,20 @@ public class PetController {
             PetDto petDto = petMapper.mapTo(petEntity);
             return new ResponseEntity<>(petDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping(path = "/pets/{id}")
+    public ResponseEntity<PetDto> fullUpdatePet(@PathVariable("id") Long id,
+                                                @RequestBody PetDto petDto) {
+
+        if(!petService.isExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        petDto.setPetId(id);
+        PetEntity petEntity = petMapper.mapFrom(petDto);
+        PetEntity savedPetEntity = petService.save(petEntity);
+
+        return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.OK);
     }
 }

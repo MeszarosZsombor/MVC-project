@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PetService {
-    PetEntity createPet(PetEntity petEntity);
+    PetEntity save(PetEntity petEntity);
 
     List<PetEntity> findAll();
 
     Optional<PetEntity> findOne(Long id);
+
+    boolean isExists(Long id);
 }

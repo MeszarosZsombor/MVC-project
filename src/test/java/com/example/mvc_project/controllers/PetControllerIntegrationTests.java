@@ -84,7 +84,7 @@ public class PetControllerIntegrationTests {
     @Test
     public void testThatListAllPetsSuccesfullyReturnsListOfPets() throws Exception {
         PetEntity testPetEntity = TestDataUtil.createTestPetB(null);
-        petService.createPet(testPetEntity);
+        petService.save(testPetEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pets")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +106,7 @@ public class PetControllerIntegrationTests {
     @Test
     public void testThatGetPetSuccesfullyReturnsHttp200WhenPetExists() throws Exception {
         PetEntity testPetEntity = TestDataUtil.createTestPetB(null);
-        petService.createPet(testPetEntity);
+        petService.save(testPetEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pets/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -118,7 +118,7 @@ public class PetControllerIntegrationTests {
     @Test
     public void testThatGetPetSuccesfullyReturnsHttp404WhenNoPetExists() throws Exception {
         PetEntity testPetEntity = TestDataUtil.createTestPetB(null);
-        petService.createPet(testPetEntity);
+        petService.save(testPetEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pets/99")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +130,7 @@ public class PetControllerIntegrationTests {
     @Test
     public void testThatGetPetSuccesfullyReturnsPetWhenPetExists() throws Exception {
         PetEntity testPetEntity = TestDataUtil.createTestPetB(null);
-        petService.createPet(testPetEntity);
+        petService.save(testPetEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pets/1")
                         .contentType(MediaType.APPLICATION_JSON)
