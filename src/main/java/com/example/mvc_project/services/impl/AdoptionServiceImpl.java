@@ -20,7 +20,7 @@ public class AdoptionServiceImpl implements AdoptionService {
     }
 
     @Override
-    public AdoptionEntity createAdoption(AdoptionEntity adoptionEntity) {
+    public AdoptionEntity save(AdoptionEntity adoptionEntity) {
         return adoptionRepository.save(adoptionEntity);
     }
 
@@ -36,5 +36,10 @@ public class AdoptionServiceImpl implements AdoptionService {
     @Override
     public Optional<AdoptionEntity> findOne(Long id) {
         return adoptionRepository.findById(id);
+    }
+
+    @Override
+    public boolean isExists(Long id) {
+        return adoptionRepository.existsById(id);
     }
 }

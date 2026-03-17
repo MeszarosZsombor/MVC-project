@@ -74,7 +74,7 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatListAllAdoptionsSuccessfullyReturnsListOfAdoptions() throws Exception {
         AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        adoptionService.createAdoption(testAdoptionEntity);
+        adoptionService.save(testAdoptionEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/adoptions")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +86,7 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
         AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        adoptionService.createAdoption(testAdoptionEntity);
+        adoptionService.save(testAdoptionEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/adoptions/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +98,7 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsHttp404WhenNoAdoptionExists() throws Exception {
         AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        adoptionService.createAdoption(testAdoptionEntity);
+        adoptionService.save(testAdoptionEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/adoptions/99")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -110,7 +110,7 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsAdoptionWhenAdoptionExists() throws Exception {
         AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        adoptionService.createAdoption(testAdoptionEntity);
+        adoptionService.save(testAdoptionEntity);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/adoptions/1")
                         .contentType(MediaType.APPLICATION_JSON)

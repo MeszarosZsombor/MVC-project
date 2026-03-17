@@ -26,7 +26,7 @@ public class AdoptionController {
     @PostMapping(path = "/adoptions")
     public ResponseEntity<AdoptionDto> createAdoption(@RequestBody AdoptionDto adoption) {
         AdoptionEntity adoptionEntity = adoptionMapper.mapFrom(adoption);
-        AdoptionEntity savedAdoptionEntity = adoptionService.createAdoption(adoptionEntity);
+        AdoptionEntity savedAdoptionEntity = adoptionService.save(adoptionEntity);
         return new ResponseEntity<>(adoptionMapper.mapTo(savedAdoptionEntity), HttpStatus.CREATED);
     }
 
@@ -45,5 +45,20 @@ public class AdoptionController {
             AdoptionDto adoptionDto = adoptionMapper.mapTo(adoptionEntity);
             return new ResponseEntity<>(adoptionDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping(path = "/adoptions/{id}")
+    public ResponseEntity<AdoptionDto> fullUpdateAdoption(@PathVariable("id") Long id,
+                                                          @RequestBody AdoptionDto adoptionDto) {
+
+        if(!adoptionService.isExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        adoptionDto.setAdoptionId(id);
+        AdoptionEntity adoptionEntity = adoptionMapper.mapFrom(adoptionDto);
+        AdoptionEntity savedAdoptionEntity = adoptionService.save(adoptionEntity);
+
+        return new ResponseEntity<>(adoptionMapper.mapTo(savedAdoptionEntity), HttpStatus.OK);
     }
 }

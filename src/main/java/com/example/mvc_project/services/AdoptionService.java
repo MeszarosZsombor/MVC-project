@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AdoptionService {
-    AdoptionEntity createAdoption(AdoptionEntity adoptionEntity);
+    AdoptionEntity save(AdoptionEntity adoptionEntity);
 
     List<AdoptionEntity> findAll();
 
     Optional<AdoptionEntity> findOne(Long id);
+
+    boolean isExists(Long id);
 }
