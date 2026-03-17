@@ -76,7 +76,7 @@ public class PetCategoryControllerIntegrationTests {
     @Test
     public void testThatListAllPetCategorySuccessfullyReturnsListOfPetCategory() throws Exception {
         PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
-        petCategoryService.createPetCategory(testPetCategory);
+        petCategoryService.save(testPetCategory);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pet_categories")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -90,7 +90,7 @@ public class PetCategoryControllerIntegrationTests {
     @Test
     public void testThatGetPetCategorySuccessfullyReturnsHttp200WhenPetCategoryExists() throws Exception {
         PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
-        petCategoryService.createPetCategory(testPetCategory);
+        petCategoryService.save(testPetCategory);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pet_categories/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -102,7 +102,7 @@ public class PetCategoryControllerIntegrationTests {
     @Test
     public void testThatGetPetCategorySuccessfullyReturnsHttp404WhenNoPetCategoryExists() throws Exception {
         PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
-        petCategoryService.createPetCategory(testPetCategory);
+        petCategoryService.save(testPetCategory);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pet_categories/99")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ public class PetCategoryControllerIntegrationTests {
     @Test
     public void testThatGetPetCategorySuccessfullyReturnsPetCategoryWhenPetCategoryExists() throws Exception {
         PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
-        petCategoryService.createPetCategory(testPetCategory);
+        petCategoryService.save(testPetCategory);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pet_categories/1")
                         .contentType(MediaType.APPLICATION_JSON)
