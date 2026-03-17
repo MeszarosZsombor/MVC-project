@@ -3,6 +3,7 @@ package com.example.mvc_project;
 
 import com.example.mvc_project.domain.dto.OwnerDto;
 import com.example.mvc_project.domain.dto.PetCategoryDto;
+import com.example.mvc_project.domain.dto.PetDto;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
 import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.domain.entities.PetEntity;
@@ -76,8 +77,31 @@ public final class TestDataUtil {
                 .build();
     }
 
+
+    public static PetDto createTestPetDtoA(final PetCategoryDto petCategoryEntity) {
+        return PetDto.builder()
+                .petName("Gato")
+                .weight(10)
+                .age(3)
+                .gender("M")
+                .petCategory(petCategoryEntity)
+                .adopted(true)
+                .build();
+    }
+
     public static PetEntity createTestPetB(final PetCategoryEntity petCategoryEntity) {
         return PetEntity.builder()
+                .petName("Doggo")
+                .weight(15)
+                .age(3)
+                .gender("F")
+                .petCategory(petCategoryEntity)
+                .adopted(true)
+                .build();
+    }
+
+    public static PetDto createTestPetDtoB(final PetCategoryDto petCategoryEntity) {
+        return PetDto.builder()
                 .petName("Doggo")
                 .weight(15)
                 .age(3)
