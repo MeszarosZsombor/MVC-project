@@ -1,6 +1,7 @@
 package com.example.mvc_project;
 
 
+import com.example.mvc_project.domain.dto.AdoptionDto;
 import com.example.mvc_project.domain.dto.OwnerDto;
 import com.example.mvc_project.domain.dto.PetCategoryDto;
 import com.example.mvc_project.domain.dto.PetDto;
@@ -159,10 +160,25 @@ public final class TestDataUtil {
                 .build();
     }
 
+    public static AdoptionDto createTestAdoptionDtoA(final OwnerDto ownerDto, final PetDto petDto) {
+        return  AdoptionDto.builder()
+                .owner(ownerDto)
+                .pet(petDto)
+                .build();
+    }
+
+
     public static AdoptionEntity createTestAdoptionB(final OwnerEntity ownerEntity, final PetEntity petEntity) {
         return  AdoptionEntity.builder()
                 .owner(ownerEntity)
                 .pet(petEntity)
+                .build();
+    }
+
+    public static AdoptionDto createTestAdoptionDtoB(final OwnerDto ownerDto, final PetDto petDto) {
+        return  AdoptionDto.builder()
+                .owner(ownerDto)
+                .pet(petDto)
                 .build();
     }
 

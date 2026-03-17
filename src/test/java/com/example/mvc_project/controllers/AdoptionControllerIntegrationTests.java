@@ -1,6 +1,7 @@
 package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
+import com.example.mvc_project.domain.dto.AdoptionDto;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
 import com.example.mvc_project.services.AdoptionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -116,6 +117,54 @@ public class AdoptionControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.adoptionId").value(1)
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
+        String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/adoptions/" + savedAdoption.getAdoptionId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(adoptionJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateAdoptionSuccessfullyReturnsHttp404WhenNoAdoptionExists() throws Exception {
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
+        String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/adoptions/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(adoptionJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateAdoptionSuccessfullyUpdatesAdoptionWhenAdoptionExists() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoB(null, null);
+        testAdoptionDto.setAdoptionId(savedAdoption.getAdoptionId());
+        String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/adoptions/" + savedAdoption.getAdoptionId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(adoptionJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.adoptionId").value(savedAdoption.getAdoptionId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.pet").value(testAdoptionDto.getPet())
         );
     }
 }
