@@ -1,6 +1,7 @@
 package com.example.mvc_project;
 
 
+import com.example.mvc_project.domain.dto.OwnerDto;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
 import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.domain.entities.PetEntity;
@@ -18,8 +19,26 @@ public final class TestDataUtil {
                 .build();
     }
 
+    public static OwnerDto createTestOwnerDtoA() {
+        return OwnerDto.builder()
+                .role("user")
+                .email("test@email.com")
+                .password("password")
+                .name("John Doe")
+                .build();
+    }
+
     public static OwnerEntity createTestOwnerB() {
         return OwnerEntity.builder()
+                .role("admin")
+                .email("test22@email.com")
+                .password("password123")
+                .name("Thomas Rose")
+                .build();
+    }
+
+    public static OwnerDto createTestOwnerDtoB() {
+        return OwnerDto.builder()
                 .role("admin")
                 .email("test22@email.com")
                 .password("password123")

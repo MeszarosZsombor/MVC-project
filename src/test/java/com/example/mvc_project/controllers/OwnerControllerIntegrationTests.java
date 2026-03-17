@@ -1,9 +1,9 @@
 package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
+import com.example.mvc_project.domain.dto.OwnerDto;
 import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.services.OwnerService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -141,6 +141,60 @@ public class OwnerControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.role").value("user")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.password").value("password")
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateOwnerSuccessfullyReturnsHttp200WhenOwnerExists() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        OwnerEntity savedOwner = ownerService.save(testOwnerEntity);
+
+        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoA();
+        String ownerJson = objectMapper.writeValueAsString(testOwnerDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/owners/" + savedOwner.getOwnerId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ownerJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateOwnerSuccessfullyReturnsHttp404WhenNoOwnerExists() throws Exception {
+        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoA();
+        String ownerJson = objectMapper.writeValueAsString(testOwnerDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/owners/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ownerJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateOwnerSuccessfullyUpdatesOwnerWhenOwnerExists() throws Exception {
+        OwnerEntity testOwnerEntityA = TestDataUtil.createTestOwnerA();
+        OwnerEntity savedOwner = ownerService.save(testOwnerEntityA);
+
+        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoB();
+        testOwnerDto.setOwnerId(savedOwner.getOwnerId());
+        String ownerJson = objectMapper.writeValueAsString(testOwnerDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/owners/" + savedOwner.getOwnerId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ownerJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.ownerId").value(savedOwner.getOwnerId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value(testOwnerDto.getName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.email").value(testOwnerDto.getEmail())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.role").value(testOwnerDto.getRole())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.password").value(testOwnerDto.getPassword())
         );
     }
 }
