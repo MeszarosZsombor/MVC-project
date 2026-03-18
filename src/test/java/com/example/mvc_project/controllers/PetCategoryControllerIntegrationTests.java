@@ -173,4 +173,54 @@ public class PetCategoryControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.petType").value(testPetCategoryDto.getPetType())
         );
     }
+
+    @Test
+    public void testThatPartialUpdatePetCategorySuccessfullyReturnsHttp200WhenPetCategoryExists() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        PetCategoryEntity savedPetCategory = petCategoryService.save(testPetCategory);
+
+        PetCategoryDto testPetCategoryDto = TestDataUtil.createTestPetCategoryDtoA();
+        testPetCategoryDto.setPetType("UPDATED");
+        String petCategoryJson = objectMapper.writeValueAsString(testPetCategoryDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/pet_categories/" + savedPetCategory.getPetCategoryId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petCategoryJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdatePetCategorySuccessfullyReturnsHttp400WhenNoPetCategoryExists() throws Exception {
+        PetCategoryDto testPetCategoryDto = TestDataUtil.createTestPetCategoryDtoA();
+        testPetCategoryDto.setPetType("UPDATED");
+        String petCategoryJson = objectMapper.writeValueAsString(testPetCategoryDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/pet_categories/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petCategoryJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdatePetCategorySuccessfullyReturnsUpdatedPetCategoryWhenPetCategoryExists() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        PetCategoryEntity savedPetCategory = petCategoryService.save(testPetCategory);
+
+        PetCategoryDto testPetCategoryDto = TestDataUtil.createTestPetCategoryDtoA();
+        testPetCategoryDto.setPetType("UPDATED");
+        String petCategoryJson = objectMapper.writeValueAsString(testPetCategoryDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/pet_categories/" + savedPetCategory.getPetCategoryId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petCategoryJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petCategoryId").value(savedPetCategory.getPetCategoryId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petType").value("UPDATED")
+        );
+    }
 }

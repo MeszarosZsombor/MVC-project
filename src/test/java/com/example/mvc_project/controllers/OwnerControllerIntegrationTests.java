@@ -217,9 +217,6 @@ public class OwnerControllerIntegrationTests {
 
     @Test
     public void testThatPartialUpdateOwnerSuccessfullyReturnsHttp400WhenNoOwnerExists() throws Exception {
-        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
-        OwnerEntity savedOwner = ownerService.save(testOwnerEntity);
-
         OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoA();
         testOwnerDto.setName("UPDATED");
         String ownerJson = objectMapper.writeValueAsString(testOwnerDto);
