@@ -42,4 +42,17 @@ public class OwnerServiceImpl implements OwnerService {
     public boolean isExists(Long id) {
         return ownerRepository.existsById(id);
     }
+
+    @Override
+    public OwnerEntity partialUpdate(Long id, OwnerEntity ownerEntity) {
+        ownerEntity.setOwnerId(id);
+
+        return ownerRepository.findById(id).map(existingOwner -> {
+            Optional.ofNullable(ownerEntity.getRole()).ifPresent(existingOwner::setRole);
+            Optional.ofNullable(ownerEntity.getName()).ifPresent(existingOwner::setName);
+            Optional.ofNullable(ownerEntity.getEmail()).ifPresent(existingOwner::setEmail);
+            Optional.ofNullable(ownerEntity.getPassword()).ifPresent(existingOwner::setPassword);
+            return ownerRepository.save(existingOwner);
+        }).orElseThrow(() -> new RuntimeException("Owner does not exists"));
+    }
 }

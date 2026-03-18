@@ -60,4 +60,17 @@ public class OwnerController {
 
         return new ResponseEntity<>(ownerMapper.mapTo(savedOwnerEntity), HttpStatus.OK);
     }
+
+    @PatchMapping(path = "/owners/{id}")
+    public ResponseEntity<OwnerDto> partialUpdateOwner(@PathVariable("id") Long id,
+                                                       @RequestBody OwnerDto ownerDto) {
+
+        if(!ownerService.isExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        OwnerEntity ownerEntity = ownerMapper.mapFrom(ownerDto);
+        OwnerEntity updatedOwner = ownerService.partialUpdate(id, ownerEntity);
+        return new ResponseEntity<>(ownerMapper.mapTo(updatedOwner), HttpStatus.OK);
+    }
 }

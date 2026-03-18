@@ -13,4 +13,6 @@ public interface OwnerService {
     Optional<OwnerEntity> findOne(Long id);
 
     boolean isExists(Long id);
+
+    OwnerEntity partialUpdate(Long id, OwnerEntity ownerEntity);
 }
