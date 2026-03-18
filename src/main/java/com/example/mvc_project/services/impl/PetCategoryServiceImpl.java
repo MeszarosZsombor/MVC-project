@@ -42,4 +42,14 @@ public class PetCategoryServiceImpl implements PetCategoryService {
     public boolean isExists(Long id) {
         return petCategoryRepository.existsById(id);
     }
+
+    @Override
+    public PetCategoryEntity partialUpdate(Long id, PetCategoryEntity petCategoryEntity) {
+        petCategoryEntity.setPetCategoryId(id);
+
+        return petCategoryRepository.findById(id).map(existingPetCategory -> {
+            Optional.ofNullable(petCategoryEntity.getPetType()).ifPresent(existingPetCategory::setPetType);
+            return petCategoryRepository.save(existingPetCategory);
+        }).orElseThrow(() -> new RuntimeException("Pet Category does not exists"));
+    }
 }
