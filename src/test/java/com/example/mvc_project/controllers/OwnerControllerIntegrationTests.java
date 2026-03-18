@@ -197,4 +197,63 @@ public class OwnerControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.password").value(testOwnerDto.getPassword())
         );
     }
+
+    @Test
+    public void testThatPartialUpdateOwnerSuccessfullyReturnsHttp200WhenOwnerExists() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        OwnerEntity savedOwner = ownerService.save(testOwnerEntity);
+
+        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoA();
+        testOwnerDto.setName("UPDATED");
+        String ownerJson = objectMapper.writeValueAsString(testOwnerDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/owners/" + savedOwner.getOwnerId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ownerJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateOwnerSuccessfullyReturnsHttp400WhenNoOwnerExists() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        OwnerEntity savedOwner = ownerService.save(testOwnerEntity);
+
+        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoA();
+        testOwnerDto.setName("UPDATED");
+        String ownerJson = objectMapper.writeValueAsString(testOwnerDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/owners/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ownerJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateOwnerSuccessfullyReturnsUpdatedOwnerWhenOwnerExists() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        OwnerEntity savedOwner = ownerService.save(testOwnerEntity);
+
+        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoA();
+        testOwnerDto.setName("UPDATED");
+        String ownerJson = objectMapper.writeValueAsString(testOwnerDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/owners/" + savedOwner.getOwnerId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ownerJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.ownerId").value(savedOwner.getOwnerId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value("UPDATED")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.email").value(testOwnerDto.getEmail())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.role").value(testOwnerDto.getRole())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.password").value(testOwnerDto.getPassword())
+        );
+    }
 }
