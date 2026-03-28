@@ -42,4 +42,16 @@ public class AdoptionServiceImpl implements AdoptionService {
     public boolean isExists(Long id) {
         return adoptionRepository.existsById(id);
     }
+
+    @Override
+    public AdoptionEntity partialUpdate(Long id, AdoptionEntity adoptionEntity) {
+        adoptionEntity.setAdoptionId(id);
+
+        return adoptionRepository.findById(id).map(existingAdoption -> {
+            Optional.ofNullable(adoptionEntity.getPet()).ifPresent(existingAdoption::setPet);
+            Optional.ofNullable(adoptionEntity.getAdoptionDate()).ifPresent(existingAdoption::setAdoptionDate);
+            Optional.ofNullable(adoptionEntity.getOwner()).ifPresent(existingAdoption::setOwner);
+            return adoptionRepository.save(existingAdoption);
+        }).orElseThrow(() -> new RuntimeException("Adoption does not exists"));
+    }
 }

@@ -13,4 +13,6 @@ public interface AdoptionService {
     Optional<AdoptionEntity> findOne(Long id);
 
     boolean isExists(Long id);
+
+    AdoptionEntity partialUpdate(Long id, AdoptionEntity adoptionEntity);
 }

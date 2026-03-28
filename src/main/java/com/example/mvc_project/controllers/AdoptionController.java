@@ -61,4 +61,19 @@ public class AdoptionController {
 
         return new ResponseEntity<>(adoptionMapper.mapTo(savedAdoptionEntity), HttpStatus.OK);
     }
+
+    @PatchMapping(path = "/adoptions/{id}")
+    public ResponseEntity<AdoptionDto> partialUpdateAdoption(@PathVariable("id") Long id,
+                                                          @RequestBody AdoptionDto adoptionDto) {
+
+        if(!adoptionService.isExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        adoptionDto.setAdoptionId(id);
+        AdoptionEntity adoptionEntity = adoptionMapper.mapFrom(adoptionDto);
+        AdoptionEntity savedAdoptionEntity = adoptionService.partialUpdate(id, adoptionEntity);
+
+        return new ResponseEntity<>(adoptionMapper.mapTo(savedAdoptionEntity), HttpStatus.OK);
+    }
 }
