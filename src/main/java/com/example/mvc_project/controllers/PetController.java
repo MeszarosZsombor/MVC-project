@@ -76,4 +76,10 @@ public class PetController {
 
         return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "/pets/{id}")
+    public ResponseEntity deletePet(@PathVariable("id") Long id) {
+        petService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

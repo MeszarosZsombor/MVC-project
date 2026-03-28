@@ -57,4 +57,9 @@ public class PetServiceImpl implements PetService {
             return petRepository.save(existingPet);
         }).orElseThrow(() -> new RuntimeException("Pet does not exists"));
     }
+
+    @Override
+    public void delete(Long id) {
+        petRepository.deleteById(id);
+    }
 }

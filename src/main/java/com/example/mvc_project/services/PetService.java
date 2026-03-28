@@ -15,4 +15,6 @@ public interface PetService {
     boolean isExists(Long id);
 
     PetEntity partialUpdate(Long id, PetEntity petEntity);
+
+    void delete(Long id);
 }
