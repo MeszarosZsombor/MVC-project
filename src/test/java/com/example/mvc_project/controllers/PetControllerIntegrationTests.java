@@ -158,7 +158,7 @@ public class PetControllerIntegrationTests {
         PetDto testPetDto = TestDataUtil.createTestPetDtoA(null);
         String petJson = objectMapper.writeValueAsString(testPetDto);
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/pets/" + savedPetEntity.getPetId())
+                MockMvcRequestBuilders.put("/pets/" + savedPetEntity.getPetId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(petJson)
         ).andExpect(
@@ -171,7 +171,7 @@ public class PetControllerIntegrationTests {
         PetDto testPetDto = TestDataUtil.createTestPetDtoB(null);
         String petJson = objectMapper.writeValueAsString(testPetDto);
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/pets/99")
+                MockMvcRequestBuilders.put("/pets/99")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(petJson)
         ).andExpect(
@@ -188,13 +188,71 @@ public class PetControllerIntegrationTests {
         testPetDto.setPetId(savedPetEntity.getPetId());
         String petJson = objectMapper.writeValueAsString(testPetDto);
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/pets/" + savedPetEntity.getPetId())
+                MockMvcRequestBuilders.put("/pets/" + savedPetEntity.getPetId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(petJson)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.petId").value(savedPetEntity.getPetId())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.petName").value(testPetDto.getPetName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.weight").value(testPetDto.getWeight())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.age").value(testPetDto.getAge())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.gender").value(testPetDto.getGender())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.adopted").value(testPetDto.getAdopted())
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdatePetSuccesfullyReturnsHttp200WhenPetExists() throws Exception {
+        PetEntity testPetEntity = TestDataUtil.createTestPetA(null);
+        PetEntity savedPetEntity = petService.save(testPetEntity);
+
+        PetDto testPetDto = TestDataUtil.createTestPetDtoA(null);
+        testPetDto.setPetName("UPDATED");
+        String petJson = objectMapper.writeValueAsString(testPetDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/pets/" + savedPetEntity.getPetId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdatePetSuccesfullyReturnsHttp400WhenNoPetExists() throws Exception {
+        PetDto testPetDto = TestDataUtil.createTestPetDtoA(null);
+        testPetDto.setPetName("UPDATED");
+        String petJson = objectMapper.writeValueAsString(testPetDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/pets/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdatePetSuccesfullyUpdatesPetWhenPetExists() throws Exception {
+        PetEntity testPetEntityA = TestDataUtil.createTestPetA(null);
+        PetEntity savedPetEntity = petService.save(testPetEntityA);
+
+        PetDto testPetDto = TestDataUtil.createTestPetDtoA(null);
+        testPetDto.setPetName("UPDATED");
+        String petJson = objectMapper.writeValueAsString(testPetDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/pets/" + savedPetEntity.getPetId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(petJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petId").value(savedPetEntity.getPetId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.petName").value("UPDATED")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.weight").value(testPetDto.getWeight())
         ).andExpect(
