@@ -55,4 +55,9 @@ public class OwnerServiceImpl implements OwnerService {
             return ownerRepository.save(existingOwner);
         }).orElseThrow(() -> new RuntimeException("Owner does not exists"));
     }
+
+    @Override
+    public void delete(Long id) {
+        ownerRepository.deleteById(id);
+    }
 }

@@ -15,4 +15,6 @@ public interface OwnerService {
     boolean isExists(Long id);
 
     OwnerEntity partialUpdate(Long id, OwnerEntity ownerEntity);
+
+    void delete(Long id);
 }

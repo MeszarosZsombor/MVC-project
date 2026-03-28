@@ -73,4 +73,11 @@ public class OwnerController {
         OwnerEntity updatedOwner = ownerService.partialUpdate(id, ownerEntity);
         return new ResponseEntity<>(ownerMapper.mapTo(updatedOwner), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "owners/{id}")
+    public ResponseEntity deleteOwner(@PathVariable("id") Long id) {
+
+        ownerService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
