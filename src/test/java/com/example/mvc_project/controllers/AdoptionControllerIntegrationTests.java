@@ -2,8 +2,11 @@ package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
 import com.example.mvc_project.domain.dto.AdoptionDto;
+import com.example.mvc_project.domain.dto.OwnerDto;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
+import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.services.AdoptionService;
+import com.example.mvc_project.services.OwnerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +29,8 @@ public class AdoptionControllerIntegrationTests {
     private AdoptionService adoptionService;
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
+    @Autowired
+    private OwnerService ownerService;
 
     @Autowired
     public AdoptionControllerIntegrationTests(MockMvc mockMvc, AdoptionService adoptionService) {
@@ -159,6 +164,74 @@ public class AdoptionControllerIntegrationTests {
         String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/adoptions/" + savedAdoption.getAdoptionId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(adoptionJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.adoptionId").value(savedAdoption.getAdoptionId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.pet").value(testAdoptionDto.getPet())
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+
+//        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerB();
+//        ownerService.save(testOwnerEntity);
+//        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoB();
+//        testOwnerDto.setName("UPDATED");
+
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
+       // testAdoptionDto.setOwner(testOwnerDto);
+        String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/adoptions/" + savedAdoption.getAdoptionId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(adoptionJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateAdoptionSuccessfullyReturnsHttp400WhenNoAdoptionExists() throws Exception {
+//        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerB();
+//        ownerService.save(testOwnerEntity);
+//        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoB();
+//        testOwnerDto.setName("UPDATED");
+
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
+        // testAdoptionDto.setOwner(testOwnerDto);
+        String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/adoptions/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(adoptionJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateAdoptionSuccessfullyUpdatesAdoptionWhenAdoptionExists() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+
+//        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerB();
+//        ownerService.save(testOwnerEntity);
+//        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoB();
+//        testOwnerDto.setName("UPDATED");
+
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
+        // testAdoptionDto.setOwner(testOwnerDto);
+        String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/adoptions/" + savedAdoption.getAdoptionId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(adoptionJson)
         ).andExpect(
