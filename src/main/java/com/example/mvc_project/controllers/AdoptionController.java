@@ -76,4 +76,10 @@ public class AdoptionController {
 
         return new ResponseEntity<>(adoptionMapper.mapTo(savedAdoptionEntity), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "/adoptions/{id}")
+    public ResponseEntity deleteUpdate(@PathVariable("id") Long id) {
+        adoptionService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

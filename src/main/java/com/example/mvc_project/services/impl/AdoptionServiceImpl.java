@@ -54,4 +54,9 @@ public class AdoptionServiceImpl implements AdoptionService {
             return adoptionRepository.save(existingAdoption);
         }).orElseThrow(() -> new RuntimeException("Adoption does not exists"));
     }
+
+    @Override
+    public void delete(Long id) {
+        adoptionRepository.deleteById(id);
+    }
 }

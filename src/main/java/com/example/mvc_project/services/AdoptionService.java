@@ -15,4 +15,6 @@ public interface AdoptionService {
     boolean isExists(Long id);
 
     AdoptionEntity partialUpdate(Long id, AdoptionEntity adoptionEntity);
+
+    void delete(Long id);
 }
