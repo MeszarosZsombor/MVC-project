@@ -223,4 +223,27 @@ public class PetCategoryControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.petType").value("UPDATED")
         );
     }
+
+    @Test
+    public void testThatDeletePetCategorySuccessfullyReturnsHttp204ForNonExistentPetCategory() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/pet_categories/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
+
+    @Test
+    public void testThatDeletePetCategorySuccessfullyReturnsHttp204ForExistentPetCategory() throws Exception {
+        PetCategoryEntity testPetCategory = TestDataUtil.createTestPetCategoryA();
+        PetCategoryEntity savedPetCategory = petCategoryService.save(testPetCategory);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/pet_categories/" + savedPetCategory.getPetCategoryId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
 }
