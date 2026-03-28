@@ -3,6 +3,8 @@ package com.example.mvc_project.services.impl;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
 import com.example.mvc_project.repositories.AdoptionRepository;
 import com.example.mvc_project.services.AdoptionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +33,11 @@ public class AdoptionServiceImpl implements AdoptionService {
                 .spliterator(),
                 false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<AdoptionEntity> findAll(Pageable pageable) {
+        return adoptionRepository.findAll(pageable);
     }
 
     @Override

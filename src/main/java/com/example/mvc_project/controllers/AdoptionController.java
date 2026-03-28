@@ -4,6 +4,8 @@ import com.example.mvc_project.domain.dto.AdoptionDto;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
 import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.services.AdoptionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +33,9 @@ public class AdoptionController {
     }
 
     @GetMapping(path = "/adoptions")
-    public List<AdoptionDto> listAdoptions() {
-        List<AdoptionEntity> adoptions = adoptionService.findAll();
-        return adoptions.stream()
-                .map(adoptionMapper::mapTo)
-                .collect(Collectors.toList());
+    public Page<AdoptionDto> listAdoptions(Pageable pageable) {
+        Page<AdoptionEntity> adoptions = adoptionService.findAll(pageable);
+        return adoptions.map(adoptionMapper::mapTo);
     }
 
     @GetMapping(path = "/adoptions/{id}")
