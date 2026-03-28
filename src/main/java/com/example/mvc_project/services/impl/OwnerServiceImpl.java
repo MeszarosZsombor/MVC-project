@@ -3,6 +3,8 @@ package com.example.mvc_project.services.impl;
 import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.repositories.OwnerRepository;
 import com.example.mvc_project.services.OwnerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +33,11 @@ public class OwnerServiceImpl implements OwnerService {
                 .spliterator(),
                 false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<OwnerEntity> findAll(Pageable pageable) {
+        return ownerRepository.findAll(pageable);
     }
 
     @Override

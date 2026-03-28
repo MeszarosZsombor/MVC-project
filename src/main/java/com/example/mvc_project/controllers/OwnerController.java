@@ -4,6 +4,8 @@ import com.example.mvc_project.domain.dto.OwnerDto;
 import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.services.OwnerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +33,9 @@ public class OwnerController {
     }
 
     @GetMapping(path = "/owners")
-    public List<OwnerDto> listOwners() {
-        List<OwnerEntity> owners = ownerService.findAll();
-        return owners.stream()
-                .map(ownerMapper::mapTo)
-                .collect(Collectors.toList());
+    public Page<OwnerDto> listOwners(Pageable pageable) {
+        Page<OwnerEntity> owners = ownerService.findAll(pageable);
+        return owners.map(ownerMapper::mapTo);
     }
 
     @GetMapping(path = "/owners/{id}")
