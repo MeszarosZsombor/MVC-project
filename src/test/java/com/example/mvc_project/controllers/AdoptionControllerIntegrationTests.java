@@ -240,4 +240,27 @@ public class AdoptionControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.pet").value(testAdoptionDto.getPet())
         );
     }
+
+    @Test
+    public void testThatDeleteAdoptionSuccessfullyReturnsHttp402ForNonExistentAdoption() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/adoptions/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
+
+    @Test
+    public void testThatDeleteAdoptionSuccessfullyReturnsHttp402ForExistentAdoption() throws Exception {
+        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/adoptions/" + savedAdoption.getAdoptionId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
 }
