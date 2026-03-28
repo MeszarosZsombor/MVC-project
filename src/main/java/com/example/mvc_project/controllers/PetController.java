@@ -4,6 +4,8 @@ import com.example.mvc_project.domain.dto.PetDto;
 import com.example.mvc_project.domain.entities.PetEntity;
 import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.services.PetService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +33,9 @@ public class PetController {
     }
 
     @GetMapping(path = "/pets")
-    public List<PetDto> listPets() {
-        List<PetEntity> pets = petService.findAll();
-        return pets.stream()
-                .map(petMapper::mapTo)
-                .collect(Collectors.toList());
+    public Page<PetDto> listPets(Pageable pageable) {
+        Page<PetEntity> pets = petService.findAll(pageable);
+        return pets.map(petMapper::mapTo);
     }
 
     @GetMapping(path = "/pets/{id}")
