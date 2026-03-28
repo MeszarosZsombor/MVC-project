@@ -73,4 +73,10 @@ public class PetCategoryController {
         PetCategoryEntity updatedPetCategoryEntity = petCategoryService.partialUpdate(id, petCategoryEntity);
         return new ResponseEntity<>(petCategoryMapper.mapTo(updatedPetCategoryEntity), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "/pet_categories/{id}")
+    public ResponseEntity deletePetCategory(@PathVariable("id") Long id) {
+        petCategoryService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

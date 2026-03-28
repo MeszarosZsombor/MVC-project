@@ -52,4 +52,9 @@ public class PetCategoryServiceImpl implements PetCategoryService {
             return petCategoryRepository.save(existingPetCategory);
         }).orElseThrow(() -> new RuntimeException("Pet Category does not exists"));
     }
+
+    @Override
+    public void delete(Long id) {
+        petCategoryRepository.deleteById(id);
+    }
 }

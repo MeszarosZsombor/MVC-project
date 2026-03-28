@@ -15,4 +15,6 @@ public interface PetCategoryService {
     boolean isExists(Long id);
 
     PetCategoryEntity partialUpdate(Long id, PetCategoryEntity petCategoryEntity);
+
+    void delete(Long id);
 }

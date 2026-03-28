@@ -74,7 +74,7 @@ public class OwnerController {
         return new ResponseEntity<>(ownerMapper.mapTo(updatedOwner), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "owners/{id}")
+    @DeleteMapping(path = "/owners/{id}")
     public ResponseEntity deleteOwner(@PathVariable("id") Long id) {
 
         ownerService.delete(id);
