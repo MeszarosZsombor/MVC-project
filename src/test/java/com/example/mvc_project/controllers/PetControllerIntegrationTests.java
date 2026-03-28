@@ -263,4 +263,27 @@ public class PetControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.adopted").value(testPetDto.getAdopted())
         );
     }
+
+    @Test
+    public void testThatDeletePetSuccesfullyReturnsHttp204ForNonExistentPet() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/pets/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
+
+    @Test
+    public void testThatDeletePetSuccesfullyReturnsHttp204ForExistentPet() throws Exception {
+        PetEntity testPetEntity = TestDataUtil.createTestPetA(null);
+        PetEntity savedPetEntity = petService.save(testPetEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/pets/" + savedPetEntity.getPetId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
 }
