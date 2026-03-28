@@ -13,4 +13,6 @@ public interface PetService {
     Optional<PetEntity> findOne(Long id);
 
     boolean isExists(Long id);
+
+    PetEntity partialUpdate(Long id, PetEntity petEntity);
 }

@@ -42,4 +42,19 @@ public class PetServiceImpl implements PetService {
     public boolean isExists(Long id) {
         return petRepository.existsById(id);
     }
+
+    @Override
+    public PetEntity partialUpdate(Long id, PetEntity petEntity) {
+        petEntity.setPetId(id);
+
+        return petRepository.findById(id).map( existingPet -> {
+            Optional.ofNullable(petEntity.getPetCategory()).ifPresent(existingPet::setPetCategory);
+            Optional.ofNullable(petEntity.getPetName()).ifPresent(existingPet::setPetName);
+            Optional.ofNullable(petEntity.getAdopted()).ifPresent(existingPet::setAdopted);
+            Optional.ofNullable(petEntity.getAge()).ifPresent(existingPet::setAge);
+            Optional.ofNullable(petEntity.getWeight()).ifPresent(existingPet::setWeight);
+            Optional.ofNullable(petEntity.getGender()).ifPresent(existingPet::setGender);
+            return petRepository.save(existingPet);
+        }).orElseThrow(() -> new RuntimeException("Pet does not exists"));
+    }
 }

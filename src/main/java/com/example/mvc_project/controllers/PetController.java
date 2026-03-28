@@ -61,4 +61,19 @@ public class PetController {
 
         return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.OK);
     }
+
+    @PatchMapping(path = "/pets/{id}")
+    public ResponseEntity<PetDto> partialUpdatePet(@PathVariable("id") Long id,
+                                                @RequestBody PetDto petDto) {
+
+        if(!petService.isExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        petDto.setPetId(id);
+        PetEntity petEntity = petMapper.mapFrom(petDto);
+        PetEntity savedPetEntity = petService.partialUpdate(id, petEntity);
+
+        return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.OK);
+    }
 }
