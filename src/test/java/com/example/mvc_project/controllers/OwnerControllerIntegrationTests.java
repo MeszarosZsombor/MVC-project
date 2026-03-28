@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -252,5 +253,24 @@ public class OwnerControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.password").value(testOwnerDto.getPassword())
         );
+    }
+
+    @Test
+    public void testThatDeleteOwnerSuccessfullyReturnsHttpStatus204ForNonExistentOwner() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/owners/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteOwnerSuccessfullyReturnsHttpStatus204ForExistentOwner() throws Exception {
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerA();
+        OwnerEntity savedOwner = ownerService.save(testOwnerEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/owners/" + savedOwner.getOwnerId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 }
