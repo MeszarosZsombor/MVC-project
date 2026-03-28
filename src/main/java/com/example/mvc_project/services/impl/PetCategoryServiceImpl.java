@@ -3,6 +3,8 @@ package com.example.mvc_project.services.impl;
 import com.example.mvc_project.domain.entities.PetCategoryEntity;
 import com.example.mvc_project.repositories.PetCategoryRepository;
 import com.example.mvc_project.services.PetCategoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +33,11 @@ public class PetCategoryServiceImpl implements PetCategoryService {
                 .spliterator(),
                 false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<PetCategoryEntity> findAll(Pageable pageable) {
+        return petCategoryRepository.findAll(pageable);
     }
 
     @Override
