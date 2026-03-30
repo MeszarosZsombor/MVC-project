@@ -24,4 +24,12 @@ public class PetMapperImpl implements Mapper<PetEntity, PetDto> {
     public PetEntity mapFrom(PetDto petDto) {
         return modelMapper.map(petDto, PetEntity.class);
     }
+
+    public void updateEntityFromDto(PetDto dto, PetEntity entity) {
+        entity.setPetName(dto.getPetName());
+        entity.setAge(dto.getAge());
+        entity.setGender(dto.getGender());
+        entity.setWeight(dto.getWeight());
+        entity.setAdopted(dto.getAdopted());
+    }
 }

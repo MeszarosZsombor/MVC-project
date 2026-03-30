@@ -79,13 +79,12 @@ public final class TestDataUtil {
     }
 
 
-    public static PetDto createTestPetDtoA(final PetCategoryDto petCategoryEntity) {
+    public static PetDto createTestPetDtoA() {
         return PetDto.builder()
                 .petName("Gato")
                 .weight(10)
                 .age(3)
                 .gender("M")
-                .petCategory(petCategoryEntity)
                 .adopted(true)
                 .build();
     }
@@ -101,13 +100,12 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static PetDto createTestPetDtoB(final PetCategoryDto petCategoryEntity) {
+    public static PetDto createTestPetDtoB() {
         return PetDto.builder()
                 .petName("Doggo")
                 .weight(15)
                 .age(3)
                 .gender("F")
-                .petCategory(petCategoryEntity)
                 .adopted(true)
                 .build();
     }

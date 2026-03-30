@@ -27,8 +27,7 @@ public class PetController {
 
     @PostMapping(path = "/pets")
     public ResponseEntity<PetDto> createPet(@RequestBody PetDto pet) {
-        PetEntity petEntity = petMapper.mapFrom(pet);
-        PetEntity savedPetEntity = petService.save(petEntity);
+        PetEntity savedPetEntity = petService.save(pet);
         return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.CREATED);
     }
 
@@ -56,8 +55,7 @@ public class PetController {
         }
 
         petDto.setPetId(id);
-        PetEntity petEntity = petMapper.mapFrom(petDto);
-        PetEntity savedPetEntity = petService.save(petEntity);
+        PetEntity savedPetEntity = petService.save(petDto);
 
         return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.OK);
     }
@@ -71,8 +69,7 @@ public class PetController {
         }
 
         petDto.setPetId(id);
-        PetEntity petEntity = petMapper.mapFrom(petDto);
-        PetEntity savedPetEntity = petService.partialUpdate(id, petEntity);
+        PetEntity savedPetEntity = petService.partialUpdate(id, petDto);
 
         return new ResponseEntity<>(petMapper.mapTo(savedPetEntity), HttpStatus.OK);
     }

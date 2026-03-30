@@ -21,7 +21,7 @@ public class PetDto {
     private Integer weight;
     private Integer age;
     private String gender;
-    private PetCategoryDto petCategory;
+    private Long petCategoryId;
     private Boolean adopted;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;

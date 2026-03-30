@@ -2,11 +2,14 @@ package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
 import com.example.mvc_project.domain.dto.AdoptionDto;
+import com.example.mvc_project.domain.dto.PetDto;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
 import com.example.mvc_project.domain.entities.OwnerEntity;
+import com.example.mvc_project.domain.entities.PetCategoryEntity;
 import com.example.mvc_project.domain.entities.PetEntity;
 import com.example.mvc_project.services.AdoptionService;
 import com.example.mvc_project.services.OwnerService;
+import com.example.mvc_project.services.PetCategoryService;
 import com.example.mvc_project.services.PetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -34,6 +37,8 @@ public class AdoptionControllerIntegrationTests {
     private OwnerService ownerService;
     @Autowired
     private PetService petService;
+    @Autowired
+    private PetCategoryService petCategoryService;
 
     @Autowired
     public AdoptionControllerIntegrationTests(MockMvc mockMvc, AdoptionService adoptionService) {
@@ -45,7 +50,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatCreateAdoptionSuccessfullyReturnsHttp201Created() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -63,7 +71,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatCreateAdoptionSuccessfullyReturnsSavedAdoption() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -91,7 +102,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatListAllAdoptionsSuccessfullyReturnsListOfAdoptions() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -108,7 +122,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -125,7 +142,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsHttp404WhenNoAdoptionExists() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -142,7 +162,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsAdoptionWhenAdoptionExists() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -159,7 +182,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatFullUpdateAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -192,7 +218,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatFullUpdateAdoptionSuccessfullyUpdatesAdoptionWhenAdoptionExists() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDtoA = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDtoA.setOwnerId(owner.getOwnerId());
@@ -218,7 +247,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatPartialUpdateAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -259,7 +291,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatPartialUpdateAdoptionSuccessfullyUpdatesAdoptionWhenAdoptionExists() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
@@ -295,7 +330,10 @@ public class AdoptionControllerIntegrationTests {
     @Test
     public void testThatDeleteAdoptionSuccessfullyReturnsHttp402ForExistentAdoption() throws Exception {
         OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
-        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+        PetCategoryEntity petCategory = petCategoryService.save(TestDataUtil.createTestPetCategoryA());
+        PetDto petDto = TestDataUtil.createTestPetDtoA();
+        petDto.setPetCategoryId(petCategory.getPetCategoryId());
+        PetEntity pet = petService.save(petDto);
 
         AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         testAdoptionDto.setOwnerId(owner.getOwnerId());
