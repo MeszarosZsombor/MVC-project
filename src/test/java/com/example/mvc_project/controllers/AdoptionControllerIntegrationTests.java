@@ -2,11 +2,12 @@ package com.example.mvc_project.controllers;
 
 import com.example.mvc_project.TestDataUtil;
 import com.example.mvc_project.domain.dto.AdoptionDto;
-import com.example.mvc_project.domain.dto.OwnerDto;
 import com.example.mvc_project.domain.entities.AdoptionEntity;
 import com.example.mvc_project.domain.entities.OwnerEntity;
+import com.example.mvc_project.domain.entities.PetEntity;
 import com.example.mvc_project.services.AdoptionService;
 import com.example.mvc_project.services.OwnerService;
+import com.example.mvc_project.services.PetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,8 @@ public class AdoptionControllerIntegrationTests {
     private ObjectMapper objectMapper;
     @Autowired
     private OwnerService ownerService;
+    @Autowired
+    private PetService petService;
 
     @Autowired
     public AdoptionControllerIntegrationTests(MockMvc mockMvc, AdoptionService adoptionService) {
@@ -41,9 +44,13 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatCreateAdoptionSuccessfullyReturnsHttp201Created() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        testAdoptionEntity.setAdoptionId(null);
-        String ownerJson = objectMapper.writeValueAsString(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        String ownerJson = objectMapper.writeValueAsString(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/adoptions")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -55,9 +62,13 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatCreateAdoptionSuccessfullyReturnsSavedAdoption() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        testAdoptionEntity.setAdoptionId(null);
-        String ownerJson = objectMapper.writeValueAsString(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        String ownerJson = objectMapper.writeValueAsString(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/adoptions")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -79,20 +90,30 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatListAllAdoptionsSuccessfullyReturnsListOfAdoptions() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        adoptionService.save(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/adoptions")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$[0].adoptionId").isNumber()
+                MockMvcResultMatchers.jsonPath("$.content[0].adoptionId").isNumber()
         );
     }
 
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        adoptionService.save(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/adoptions/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,8 +124,13 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsHttp404WhenNoAdoptionExists() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        adoptionService.save(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/adoptions/99")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,8 +141,13 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatGetAdoptionSuccessfullyReturnsAdoptionWhenAdoptionExists() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        adoptionService.save(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/adoptions/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -127,10 +158,14 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
 
-        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionDto);
+
         String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/adoptions/" + savedAdoption.getAdoptionId())
@@ -143,7 +178,7 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateAdoptionSuccessfullyReturnsHttp404WhenNoAdoptionExists() throws Exception {
-        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
         String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/adoptions/99")
@@ -156,12 +191,19 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateAdoptionSuccessfullyUpdatesAdoptionWhenAdoptionExists() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
 
-        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoB(null, null);
-        testAdoptionDto.setAdoptionId(savedAdoption.getAdoptionId());
-        String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
+        AdoptionDto testAdoptionDtoA = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDtoA.setOwnerId(owner.getOwnerId());
+        testAdoptionDtoA.setPetId(pet.getPetId());
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionDtoA);
+
+        AdoptionDto testAdoptionDtoB = TestDataUtil.createTestAdoptionDtoB();
+        testAdoptionDtoB.setAdoptionId(savedAdoption.getAdoptionId());
+        testAdoptionDtoB.setOwnerId(owner.getOwnerId());
+        testAdoptionDtoB.setPetId(pet.getPetId());
+        String adoptionJson = objectMapper.writeValueAsString(testAdoptionDtoB);
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/adoptions/" + savedAdoption.getAdoptionId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -169,23 +211,24 @@ public class AdoptionControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.adoptionId").value(savedAdoption.getAdoptionId())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.pet").value(testAdoptionDto.getPet())
+                MockMvcResultMatchers.jsonPath("$.petId").value(testAdoptionDtoA.getPetId())
         );
     }
 
     @Test
     public void testThatPartialUpdateAdoptionSuccessfullyReturnsHttp200WhenAdoptionExists() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
 
-//        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerB();
-//        ownerService.save(testOwnerEntity);
-//        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoB();
-//        testOwnerDto.setName("UPDATED");
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionDto);
 
+        OwnerEntity ownerB = TestDataUtil.createTestOwnerB();
+        OwnerEntity savedOwnerB = ownerService.save(ownerB);
 
-        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
-       // testAdoptionDto.setOwner(testOwnerDto);
+        testAdoptionDto.setOwnerId(savedOwnerB.getOwnerId());
         String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/adoptions/" + savedAdoption.getAdoptionId())
@@ -198,14 +241,11 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatPartialUpdateAdoptionSuccessfullyReturnsHttp400WhenNoAdoptionExists() throws Exception {
-//        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerB();
-//        ownerService.save(testOwnerEntity);
-//        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoB();
-//        testOwnerDto.setName("UPDATED");
+        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerB();
+        ownerService.save(testOwnerEntity);
 
-
-        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
-        // testAdoptionDto.setOwner(testOwnerDto);
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(testOwnerEntity.getOwnerId());
         String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/adoptions/99")
@@ -218,17 +258,18 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatPartialUpdateAdoptionSuccessfullyUpdatesAdoptionWhenAdoptionExists() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
 
-//        OwnerEntity testOwnerEntity = TestDataUtil.createTestOwnerB();
-//        ownerService.save(testOwnerEntity);
-//        OwnerDto testOwnerDto = TestDataUtil.createTestOwnerDtoB();
-//        testOwnerDto.setName("UPDATED");
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionDto);
 
+        OwnerEntity ownerB = TestDataUtil.createTestOwnerB();
+        OwnerEntity savedOwnerB = ownerService.save(ownerB);
 
-        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA(null, null);
-        // testAdoptionDto.setOwner(testOwnerDto);
+        testAdoptionDto.setOwnerId(savedOwnerB.getOwnerId());
         String adoptionJson = objectMapper.writeValueAsString(testAdoptionDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/adoptions/" + savedAdoption.getAdoptionId())
@@ -237,7 +278,7 @@ public class AdoptionControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.adoptionId").value(savedAdoption.getAdoptionId())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.pet").value(testAdoptionDto.getPet())
+                MockMvcResultMatchers.jsonPath("$.ownerId").value(testAdoptionDto.getOwnerId())
         );
     }
 
@@ -253,8 +294,13 @@ public class AdoptionControllerIntegrationTests {
 
     @Test
     public void testThatDeleteAdoptionSuccessfullyReturnsHttp402ForExistentAdoption() throws Exception {
-        AdoptionEntity testAdoptionEntity = TestDataUtil.createTestAdoptionA(null, null);
-        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionEntity);
+        OwnerEntity owner = ownerService.save(TestDataUtil.createTestOwnerA());
+        PetEntity pet = petService.save(TestDataUtil.createTestPetA(null));
+
+        AdoptionDto testAdoptionDto = TestDataUtil.createTestAdoptionDtoA();
+        testAdoptionDto.setOwnerId(owner.getOwnerId());
+        testAdoptionDto.setPetId(pet.getPetId());
+        AdoptionEntity savedAdoption = adoptionService.save(testAdoptionDto);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/adoptions/" + savedAdoption.getAdoptionId())

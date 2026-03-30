@@ -20,8 +20,8 @@ import java.time.OffsetDateTime;
 public class AdoptionDto {
 
     private Long adoptionId;
-    private OwnerDto owner;
-    private PetDto pet;
+    private Long ownerId;
+    private Long petId;
     private OffsetDateTime adoptionDate;
     private OffsetDateTime updatedAt;
 

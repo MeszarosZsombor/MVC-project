@@ -160,10 +160,8 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static AdoptionDto createTestAdoptionDtoA(final OwnerDto ownerDto, final PetDto petDto) {
+    public static AdoptionDto createTestAdoptionDtoA() {
         return  AdoptionDto.builder()
-                .owner(ownerDto)
-                .pet(petDto)
                 .build();
     }
 
@@ -175,10 +173,8 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static AdoptionDto createTestAdoptionDtoB(final OwnerDto ownerDto, final PetDto petDto) {
+    public static AdoptionDto createTestAdoptionDtoB() {
         return  AdoptionDto.builder()
-                .owner(ownerDto)
-                .pet(petDto)
                 .build();
     }
 

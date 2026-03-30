@@ -23,7 +23,9 @@ public class AdoptionMapperImpl implements Mapper<AdoptionEntity, AdoptionDto> {
     }
 
     @Override
-    public AdoptionEntity mapFrom(AdoptionDto adoptionDto) {
-        return modelMapper.map(adoptionDto, AdoptionEntity.class);
+    public AdoptionEntity mapFrom(AdoptionDto dto) {
+        return AdoptionEntity.builder()
+                .adoptionId(dto.getAdoptionId())
+                .build();
     }
 }
