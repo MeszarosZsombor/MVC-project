@@ -1,5 +1,5 @@
 # Main folder
-.idea/
+/.idea/
 
 # Backend
 /backend/target/
