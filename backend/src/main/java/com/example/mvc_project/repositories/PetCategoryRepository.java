@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface PetCategoryRepository extends CrudRepository<PetCategoryEntity, Long>,
         PagingAndSortingRepository<PetCategoryEntity, Long> {
     boolean existsByPetType(String petType);
+    boolean existsByPetTypeAndPetCategoryIdNot(String petType, Long petCategoryId);
 }

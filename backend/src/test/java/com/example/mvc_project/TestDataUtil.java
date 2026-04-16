@@ -123,31 +123,31 @@ public final class TestDataUtil {
 
     public static PetCategoryEntity createTestPetCategoryA() {
         return PetCategoryEntity.builder()
-                .petType("cat")
+                .petType("Cat")
                 .build();
     }
 
     public static PetCategoryDto createTestPetCategoryDtoA() {
         return PetCategoryDto.builder()
-                .petType("cat")
+                .petType("Cat")
                 .build();
     }
 
     public static PetCategoryEntity createTestPetCategoryB() {
         return PetCategoryEntity.builder()
-                .petType("dog")
+                .petType("Dog")
                 .build();
     }
 
     public static PetCategoryDto createTestPetCategoryDtoB() {
         return PetCategoryDto.builder()
-                .petType("dog")
+                .petType("Dog")
                 .build();
     }
 
     public static PetCategoryEntity createTestPetCategoryC() {
         return PetCategoryEntity.builder()
-                .petType("hamster")
+                .petType("Hamster")
                 .build();
     }
 

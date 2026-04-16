@@ -65,7 +65,7 @@ public class PetCategoryControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.petCategoryId").isNumber()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.petType").value("cat")
+                MockMvcResultMatchers.jsonPath("$.petType").value("Cat")
         );
     }
 
@@ -121,7 +121,7 @@ public class PetCategoryControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.content[0].petCategoryId").isNumber()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.content[0].petType").value("cat")
+                MockMvcResultMatchers.jsonPath("$.content[0].petType").value("Cat")
         );
     }
 
@@ -159,7 +159,7 @@ public class PetCategoryControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.petCategoryId").value(1)
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.petType").value("cat")
+                MockMvcResultMatchers.jsonPath("$.petType").value("Cat")
         );
     }
 

@@ -30,7 +30,11 @@ public class PetCategoryServiceImpl implements PetCategoryService {
         String normalized = capitalizeWords(
                 petCategoryEntity.getPetType().trim().toLowerCase());
 
-        if(petCategoryRepository.existsByPetType(normalized)){
+        boolean conflict = (petCategoryEntity.getPetCategoryId() == null)
+                ? petCategoryRepository.existsByPetType(normalized)
+                : petCategoryRepository.existsByPetTypeAndPetCategoryIdNot(normalized, petCategoryEntity.getPetCategoryId());
+
+        if (conflict) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Category already exists");
         }
 
