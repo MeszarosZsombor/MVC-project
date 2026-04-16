@@ -10,12 +10,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -62,6 +67,38 @@ public class PetCategoryControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.petType").value("cat")
         );
+    }
+
+    @Test
+    public void testThatSamePetCategoryTypeCannotBeCreated() {
+        PetCategoryEntity petCategoryEntityA = TestDataUtil.createTestPetCategoryA();
+        PetCategoryEntity petCategoryEntityB = TestDataUtil.createTestPetCategoryA();
+
+        petCategoryService.save(petCategoryEntityA);
+
+        ResponseStatusException ex = assertThrows(
+                ResponseStatusException.class,
+                () -> petCategoryService.save(petCategoryEntityB)
+        );
+
+        assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
+    }
+
+    @Test
+    public void testThatSamePetCategoryTypeAsUppercaseCannotBeCreated() {
+        PetCategoryEntity petCategoryEntityA = TestDataUtil.createTestPetCategoryA();
+        PetCategoryEntity petCategoryEntityB = TestDataUtil.createTestPetCategoryA();
+
+        petCategoryEntityB.setPetType("cAt");
+
+        petCategoryService.save(petCategoryEntityA);
+
+        ResponseStatusException ex = assertThrows(
+                ResponseStatusException.class,
+                () -> petCategoryService.save(petCategoryEntityB)
+        );
+
+        assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
     }
 
     @Test

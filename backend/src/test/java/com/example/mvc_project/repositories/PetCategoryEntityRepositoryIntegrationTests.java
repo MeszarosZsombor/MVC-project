@@ -69,4 +69,15 @@ public class PetCategoryEntityRepositoryIntegrationTests {
         Optional<PetCategoryEntity> result = underTest.findById(savedPetCategoryEntity.getPetCategoryId());
         assertThat(result).isEmpty();
     }
+
+    @Test
+    public void testThatPetTypeExistsMethodIsWorking() {
+        PetCategoryEntity petCategoryEntityA = TestDataUtil.createTestPetCategoryA();
+
+        underTest.save(petCategoryEntityA);
+
+        boolean result = underTest.existsByPetType(petCategoryEntityA.getPetType());
+
+        assertThat(result).isEqualTo(true);
+    }
 }

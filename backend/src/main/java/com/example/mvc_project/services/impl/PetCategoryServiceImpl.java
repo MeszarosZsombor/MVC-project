@@ -5,12 +5,16 @@ import com.example.mvc_project.repositories.PetCategoryRepository;
 import com.example.mvc_project.services.PetCategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static com.example.mvc_project.utilities.StringHelper.capitalizeWords;
 
 @Service
 public class PetCategoryServiceImpl implements PetCategoryService {
@@ -23,6 +27,15 @@ public class PetCategoryServiceImpl implements PetCategoryService {
 
     @Override
     public PetCategoryEntity save(PetCategoryEntity petCategoryEntity) {
+        String normalized = capitalizeWords(
+                petCategoryEntity.getPetType().trim().toLowerCase());
+
+        if(petCategoryRepository.existsByPetType(normalized)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Category already exists");
+        }
+
+        petCategoryEntity.setPetType(normalized);
+
         return petCategoryRepository.save(petCategoryEntity);
     }
 
