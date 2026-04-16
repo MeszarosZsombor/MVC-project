@@ -18,4 +18,6 @@ onMounted(async () => {
       {{ pet.petName }} - {{ pet.age }} years
     </li>
   </ul>
+
+  <h2>Add Pet</h2>
 </template>
