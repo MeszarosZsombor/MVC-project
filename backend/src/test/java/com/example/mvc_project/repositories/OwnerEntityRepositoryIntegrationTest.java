@@ -86,4 +86,22 @@ public class OwnerEntityRepositoryIntegrationTest {
         Iterable<OwnerEntity> result = underTest.roleIs("user");
         assertThat(result).containsExactly(ownerEntityA, ownerEntityC, ownerEntityD);
     }
+
+    @Test
+    public void testThatExistsByEmailMethodIsWorking() {
+        OwnerEntity ownerEntityA = TestDataUtil.createTestOwnerA();
+        underTest.save(ownerEntityA);
+
+        assertThat(underTest.existsByEmail(ownerEntityA.getEmail())).isTrue();
+    }
+
+    @Test
+    public void testThatExistsByEmailMethodGivesBackFalseWithNonRegisteredEmail() {
+        OwnerEntity ownerEntityA = TestDataUtil.createTestOwnerA();
+        underTest.save(ownerEntityA);
+
+        OwnerEntity ownerEntityB = TestDataUtil.createTestOwnerB();
+
+        assertThat(underTest.existsByEmail(ownerEntityB.getEmail())).isFalse();
+    }
 }

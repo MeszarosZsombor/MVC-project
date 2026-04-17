@@ -17,6 +17,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -69,6 +73,21 @@ public class OwnerControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.password").value("password")
         );
+    }
+
+    @Test
+    public void testThatSameEmailCannotBeRegistered() {
+        OwnerEntity ownerEntityA = TestDataUtil.createTestOwnerA();
+        OwnerEntity ownerEntityB = TestDataUtil.createTestOwnerA();
+
+        ownerService.save(ownerEntityA);
+
+        ResponseStatusException ex = assertThrows(
+                ResponseStatusException.class,
+                () -> ownerService.save(ownerEntityB)
+        );
+
+        assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
     }
 
     @Test
