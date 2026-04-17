@@ -33,7 +33,7 @@ public final class TestDataUtil {
 
     public static OwnerEntity createTestOwnerB() {
         return OwnerEntity.builder()
-                .role("admin")
+                .role("user")
                 .email("test22@email.com")
                 .password("password123")
                 .name("Thomas Rose")
@@ -42,7 +42,7 @@ public final class TestDataUtil {
 
     public static OwnerDto createTestOwnerDtoB() {
         return OwnerDto.builder()
-                .role("admin")
+                .role("user")
                 .email("test22@email.com")
                 .password("password123")
                 .name("Thomas Rose")

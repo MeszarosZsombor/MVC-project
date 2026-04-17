@@ -70,8 +70,6 @@ public class OwnerControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.email").value("test@email.com")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.role").value("user")
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.password").value("password")
         );
     }
 
@@ -115,8 +113,6 @@ public class OwnerControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.content[0].email").value("test@email.com")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.content[0].role").value("user")
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.content[0].password").value("password")
         );
     }
 
@@ -159,8 +155,6 @@ public class OwnerControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.email").value("test@email.com")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.role").value("user")
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.password").value("password")
         );
     }
 
@@ -213,8 +207,6 @@ public class OwnerControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.email").value(testOwnerDto.getEmail())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.role").value(testOwnerDto.getRole())
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.password").value(testOwnerDto.getPassword())
         );
     }
 

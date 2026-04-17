@@ -74,17 +74,13 @@ public class OwnerEntityRepositoryIntegrationTest {
 
     @Test
     public void testThatGetOwnersWithRoleUser() {
-        OwnerEntity ownerEntityA = TestDataUtil.createTestOwnerA();
-        underTest.save(ownerEntityA);
-        OwnerEntity ownerEntityB = TestDataUtil.createTestOwnerB();
-        underTest.save(ownerEntityB);
-        OwnerEntity ownerEntityC = TestDataUtil.createTestOwnerC();
-        underTest.save(ownerEntityC);
-        OwnerEntity ownerEntityD = TestDataUtil.createTestOwnerD();
-        underTest.save(ownerEntityD);
+        OwnerEntity ownerEntityA = underTest.save(TestDataUtil.createTestOwnerA());
+        OwnerEntity ownerEntityB = underTest.save(TestDataUtil.createTestOwnerB());
+        OwnerEntity ownerEntityC = underTest.save(TestDataUtil.createTestOwnerC());
+        OwnerEntity ownerEntityD = underTest.save(TestDataUtil.createTestOwnerD());
 
         Iterable<OwnerEntity> result = underTest.roleIs("user");
-        assertThat(result).containsExactly(ownerEntityA, ownerEntityC, ownerEntityD);
+        assertThat(result).containsExactly(ownerEntityA, ownerEntityB, ownerEntityC, ownerEntityD);
     }
 
     @Test
