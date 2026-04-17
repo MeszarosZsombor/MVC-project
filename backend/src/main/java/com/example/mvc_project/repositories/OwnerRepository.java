@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface OwnerRepository extends CrudRepository<OwnerEntity, Long>,
         PagingAndSortingRepository<OwnerEntity, Long> {
     Iterable<OwnerEntity> roleIs(String role);
+    boolean existsByEmail(String email);
+    boolean existsByEmailAndOwnerIdNot(String email, Long id);
 }
