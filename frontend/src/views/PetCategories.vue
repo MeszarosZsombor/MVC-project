@@ -19,11 +19,14 @@ const loadCategories = async () => {
 const addCategory = async () => {
   errorMessage.value = "";
 
-  if (!petType.value.trim()) return;
+  if (!petType.value.trim()) {
+    errorMessage.value = "Category cannot be empty";
+    return;
+  }
 
   try{
     const newCategory = await createPetCategory({
-      petType: petType.value,
+      petType: petType.value.trim(),
     })
 
     categories.value.push(newCategory.data)

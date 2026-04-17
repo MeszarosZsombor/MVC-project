@@ -1,9 +1,10 @@
 <script setup>
+import Logo from "./Logo.vue";
 </script>
 
 <template>
   <header>
-    <!--- TODO: logo -->
+    <Logo></Logo>
     <router-link to="/users" class="site-button">Users</router-link>
     <router-link to="/pet-categories" class="site-button">Pet Categories</router-link>
     <router-link to="/pets" class="site-button">Pets</router-link>
