@@ -98,12 +98,13 @@
   }
 
   input {
-    width: 100%;
+    width: 80%;
     padding: 10px 14px;
     font-size: 14px;
     background: #f7f7f5;
     border: 0.5px solid #e0e0e0;
     border-radius: 8px;
+    color: black;
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
   }

@@ -4,7 +4,7 @@ import Logo from "./Logo.vue";
 
 <template>
   <header>
-    <Logo></Logo>
+    <Logo class="logo"></Logo>
     <router-link to="/users" class="site-button">Users</router-link>
     <router-link to="/pet-categories" class="site-button">Pet Categories</router-link>
     <router-link to="/pets" class="site-button">Pets</router-link>
@@ -13,17 +13,25 @@ import Logo from "./Logo.vue";
 </template>
 
 <style scoped>
-header {
-  margin-top: 20px;
-}
+  header {
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 20px;
+    margin-left: 20px;
+    display: flex;
+  }
 
-.site-button {
-  margin-right: 10px;
-  cursor: pointer;
-  text-decoration: none;
-  color: black;
-  background-color: white;
-  padding: 6px;
-  border-radius: 7px;
-}
+  .logo {
+    align-self: center;
+    margin-right: 20px;
+  }
+
+  .site-button {
+    margin-right: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    background-color: white;
+    padding: 6px;
+    border-radius: 7px;
+  }
 </style>
