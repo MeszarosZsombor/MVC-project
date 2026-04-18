@@ -49,7 +49,7 @@ Run all tests with:
 ### 1. Step: Build jar
 If this is your first install, or you made changes inside the Spring application, then do the following command inside /backend:
 ```` bash
-    ./mvnw clean package
+  ./mvnw clean package
 ```` 
 
 Wait until maven is finished with building.
@@ -57,7 +57,7 @@ Wait until maven is finished with building.
 ### 2. Step: Docker image build
 Inside /backend write the following:
 ```` bash
-    docker build -t pet-backend:latest .
+  docker build -t pet-backend:latest .
 ````
 
 With this you are building the backend with the jar file, it downloads the neccesary files for the DB and Spring
@@ -65,19 +65,19 @@ With this you are building the backend with the jar file, it downloads the necce
 ### 3. Step: Stop old container
 With
 ```` bash
-    docker ps
+  docker ps
 ````
 
 Check if there are containers that still running. If yes, do the following:
 ```` bash
-    docker stop <container_id>
-    docker rm <container_id>
+  docker stop <container_id>
+  docker rm <container_id>
 ````
 
 ### 4. Step: Run new container
 Run the following command in the main folder (/MVC-project)
 ```` bash
-docker compose up --build
+  docker compose up --build
 ````
 
 ### ---- NOT WORKING WITH THIS NOW ----
