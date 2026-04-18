@@ -1,6 +1,30 @@
 <script setup>
 
 import Logo from "./Logo.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth.js";
+import {loginOwner} from "../services/ownerService.js";
+
+const auth = useAuthStore();
+const router = useRouter();
+const email = ref("")
+const password = ref("")
+const errorMessage = ref("")
+
+const login = async () => {
+  try {
+    const response = await loginOwner({
+      email: email.value.trim(),
+      password: password.value.trim()
+    });
+
+    auth.login(response.data.user, response.data.token);
+    router.push("/pet-categories");
+  }catch(err) {
+    errorMessage.value = err.message;
+  }
+}
 
 const emit = defineEmits(["switch"]);
 </script>

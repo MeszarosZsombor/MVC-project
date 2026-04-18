@@ -1,11 +1,13 @@
 <script setup>
 import {ref, onMounted, computed} from "vue";
 import { createPetCategory, getPetCategories } from "../services/petCategoryService";
+import { useAuthStore } from "../stores/auth.js";
 import Logo from "../components/Logo.vue";
 
 const categories = ref([]);
 const petType = ref("");
 const errorMessage = ref("");
+const auth = useAuthStore();
 
 const isDisabled = computed(() => !petType.value.trim());
 
@@ -13,7 +15,6 @@ const loadCategories = async () => {
   try {
     const response = await getPetCategories();
     categories.value = response.data.content;
-    console.log(categories.value)
   }catch(error) {
     console.error(error);
   }

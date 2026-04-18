@@ -1,8 +1,12 @@
 <script setup>
   import { ref } from 'vue';
-  import { createOwner } from "../services/ownerService.js";
+  import { useRouter } from "vue-router";
+  import { useAuthStore } from "../stores/auth.js";
+  import { registerOwner } from "../services/ownerService.js";
   import Logo from "./Logo.vue";
 
+  const auth = useAuthStore();
+  const router = useRouter();
   const email = ref("");
   const name = ref("");
   const password = ref("");
@@ -26,15 +30,20 @@
     }
 
     try{
-      await createOwner({
+      const response = await registerOwner({
         email: email.value.trim(),
         name: name.value.trim(),
         password: password.value.trim(),
       });
+      
+      auth.login(response.data, response.data.token);
+      router.push('/pet-categories');
     }catch(err){
       errorMessage.value = "Registration failed";
+      console.error(err);
     }
   }
+  
 </script>
 
 <template>
