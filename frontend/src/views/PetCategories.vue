@@ -1,10 +1,13 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import {ref, onMounted, computed} from "vue";
 import { createPetCategory, getPetCategories } from "../services/petCategoryService";
+import Logo from "../components/Logo.vue";
 
 const categories = ref([]);
 const petType = ref("");
 const errorMessage = ref("");
+
+const isDisabled = computed(() => !petType.value.trim());
 
 const loadCategories = async () => {
   try {
@@ -45,18 +48,20 @@ onMounted(loadCategories);
 </script>
 
 <template>
-  <h1>Pet Categories</h1>
+
+  <div class="card">
+    <Logo></Logo>
+    <p class="sub"> Add Category </p>
+    <p v-if="errorMessage" class="error-msg"> {{ errorMessage }} </p>
+    <form @submit.prevent="addCategory">
+      <input v-model="petType" type="text" placeholder="Category Name" required />
+      <button type="submit" class="btn" :disabled="isDisabled">Add Category</button>
+    </form>
+  </div>
 
   <ul>
     <li v-for="category in categories"> {{category.petType}} </li>
   </ul>
-
-  <h2>Add Category</h2>
-  <p v-if="errorMessage" style="color: red;"> {{ errorMessage }} </p>
-  <form @submit.prevent="addCategory">
-    <input v-model="petType" type="text" placeholder="Category Name" required />
-    <button type="submit" :disabled="!petType.trim()">Add Category</button>
-  </form>
 </template>
 
 <style scoped>

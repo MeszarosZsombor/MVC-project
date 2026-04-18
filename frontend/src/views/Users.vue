@@ -1,11 +1,15 @@
 <script setup>
 
+import { ref } from "vue";
 import Register from "../components/Register.vue";
+import Login from "../components/Login.vue";
+
+const activeTab = ref("login");
 </script>
 
 <template>
-<h1>Users</h1>
-  <Register></Register>
+  <Login v-if="activeTab === 'login'" @switch="activeTab = 'register'" />
+  <Register v-else @switch="activeTab = 'login'" />
 </template>
 
 <style scoped>
