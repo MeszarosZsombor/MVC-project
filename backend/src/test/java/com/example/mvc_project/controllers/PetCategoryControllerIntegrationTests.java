@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class PetCategoryControllerIntegrationTests {
 
     private PetCategoryService petCategoryService;

@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class PetControllerIntegrationTests {
 
     private PetService petService;
