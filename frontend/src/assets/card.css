@@ -47,6 +47,40 @@ input:focus {
     box-shadow: 0 0 0 3px rgba(29,158,117,0.12);
 }
 
+/* Number input - nyilak elrejtése */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Select */
+select {
+    width: 87.5%;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: #f7f7f5;
+    border: 0.5px solid #e0e0e0;
+    border-radius: 8px;
+    outline: none;
+    color: #333;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+select:focus {
+    border-color: #1D9E75;
+    box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.12);
+}
+
 .btn {
     width: 100%;
     margin-top: 0.5rem;
