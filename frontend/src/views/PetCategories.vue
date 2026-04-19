@@ -16,7 +16,8 @@ const loadCategories = async () => {
     const response = await getPetCategories();
     categories.value = response.data.content;
   }catch(error) {
-    console.error(error);
+    console.log("Retrying...");
+    setTimeout(loadCategories, 1000);
   }
 }
 
@@ -33,14 +34,14 @@ const addCategory = async () => {
       petType: petType.value.trim(),
     })
 
-    categories.value.push(newCategory.data)
+    categories.value.push(newCategory.data);
 
     petType.value = "";
   }catch(err){
     if (err.response && err.response.status === 409) {
-      errorMessage.value = "Category already exists"
+      errorMessage.value = "Category already exists";
     } else {
-      errorMessage.value = "Something went wrong"
+      errorMessage.value = "Something went wrong";
     }
   }
 }
