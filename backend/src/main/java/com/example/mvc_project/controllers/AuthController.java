@@ -3,6 +3,7 @@ package com.example.mvc_project.controllers;
 import com.example.mvc_project.domain.dto.LoginRequestDto;
 import com.example.mvc_project.domain.dto.LoginResponseDto;
 import com.example.mvc_project.domain.dto.OwnerDto;
+import com.example.mvc_project.domain.dto.OwnerResponseDto;
 import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.mappers.Mapper;
 import com.example.mvc_project.repositories.OwnerRepository;
@@ -38,7 +39,8 @@ public class AuthController {
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
         OwnerEntity owner = ownerRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or password is incorrect"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED, "Email or password is incorrect"));
 
         if (!passwordEncoder.matches(request.getPassword(), owner.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or password is incorrect");
@@ -46,7 +48,9 @@ public class AuthController {
 
         String token = jwtService.generateToken(owner.getEmail());
 
-        return ResponseEntity.ok(new LoginResponseDto(token, owner.getEmail(), owner.getName()));
+        OwnerResponseDto user = new OwnerResponseDto(owner.getEmail(), owner.getName());
+
+        return ResponseEntity.ok(new LoginResponseDto(token, user));
     }
 
     @PostMapping("/auth/register")
@@ -55,11 +59,11 @@ public class AuthController {
         OwnerEntity savedOwnerEntity = ownerService.save(ownerEntity);
         String token = jwtService.generateToken(savedOwnerEntity.getEmail());
 
+        OwnerResponseDto user = new OwnerResponseDto(
+                savedOwnerEntity.getEmail(), savedOwnerEntity.getName());
+
         return new ResponseEntity<>(
-                new LoginResponseDto(token,
-                        savedOwnerEntity.getEmail(),
-                        savedOwnerEntity.getName()
-                ), HttpStatus.CREATED
+                new LoginResponseDto(token, user), HttpStatus.CREATED
         );
     }
 }

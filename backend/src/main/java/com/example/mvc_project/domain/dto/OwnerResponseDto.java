@@ -1,6 +1,5 @@
 package com.example.mvc_project.domain.dto;
 
-import com.example.mvc_project.domain.entities.OwnerEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponseDto {
+public class OwnerResponseDto {
 
-    private String token;
-    private OwnerResponseDto user;
+    private String email;
+    private String name;
 
 }
