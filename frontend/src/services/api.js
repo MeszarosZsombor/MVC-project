@@ -18,4 +18,21 @@ api.interceptors.request.use(config => {
     return config
 })
 
+api.interceptors.response.use(
+    response => response,
+    error => {
+        const authStore = useAuthStore();
+
+        const isAuthRoute = error.config.url.includes("/auth");
+
+        //could be 403 as well?
+        if (!isAuthRoute && error.response?.status === 401) {
+            console.log("Unauthorized access... logging out user...");
+            authStore.logout();
+        }
+
+        return Promise.reject(error);
+    }
+);
+
 export default api
