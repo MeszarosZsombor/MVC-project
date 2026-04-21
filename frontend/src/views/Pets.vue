@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import {createPet, getPets} from '../services/petService'
 import Logo from "../components/Logo.vue";
+import PetCard from "../components/PetCard.vue";
 import {useAuthStore} from "../stores/auth.js";
 import { getPetCategories } from "../services/petCategoryService.js";
 
@@ -59,11 +60,9 @@ async function addPet() {
 <template>
   <h1>Pets</h1>
 
-  <ul>
-    <li v-for="pet in pets" :key="pet.petId">
-      {{ pet.petName }} - {{ pet.age }} years
-    </li>
-  </ul>
+  <div class="pets-grid">
+    <PetCard v-for="pet in pets" :key="pet.petId" :pet="pet" />
+  </div>
 
   <div class="card">
     <Logo/>
@@ -108,3 +107,12 @@ async function addPet() {
     </form>
   </div>
 </template>
+
+<style scoped>
+.pets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 0 2rem 2rem 2rem;
+}
+</style>
