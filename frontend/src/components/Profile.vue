@@ -6,7 +6,6 @@
   const user = auth.user;
   const adoptions = ref([]);
 
-  console.log(user);
 </script>
 
 <template>
