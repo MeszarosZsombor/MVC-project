@@ -2,6 +2,7 @@ package com.example.mvc_project.security;
 
 import com.example.mvc_project.domain.entities.OwnerEntity;
 import com.example.mvc_project.repositories.OwnerRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,25 +39,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authHeader.substring(7);
-        String email = jwtService.extractEmail(token);
+        try {
+            String token = authHeader.substring(7);
+            String email = jwtService.extractEmail(token);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            OwnerEntity owner = ownerRepository.findByEmail(email)
-                    .orElse(null);
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                OwnerEntity owner = ownerRepository.findByEmail(email)
+                        .orElse(null);
 
-            if (owner == null) {
-                filterChain.doFilter(request, response);
-                return;
+                if (owner != null && jwtService.isTokenValid(token, email)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    owner, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
-
-            if (jwtService.isTokenValid(token, email)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                owner, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
+        } catch (ExpiredJwtException e) {
+            System.out.println("Token expired");
+        } catch (Exception e) {
+            throw new RuntimeException("Token invalid");
         }
 
         filterChain.doFilter(request, response);
