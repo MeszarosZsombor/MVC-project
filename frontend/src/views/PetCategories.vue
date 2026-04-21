@@ -42,6 +42,7 @@ const addCategory = async () => {
       errorMessage.value = "Category already exists";
     } else {
       errorMessage.value = "Something went wrong";
+      console.error(err);
     }
   }
 }

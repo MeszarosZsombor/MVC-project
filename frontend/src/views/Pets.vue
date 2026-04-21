@@ -25,30 +25,31 @@ onMounted(async () => {
   categories.value = categoriesResponse.data.content || categoriesResponse.data;
 
   if (categories.value.length > 0) {
-    petCategoryId.value = categories.value[0].id;
+    petCategoryId.value = categories.value[0].petCategoryId;
   } else {
     isDisabled = true;
-    categories.value = ["Add a pet category first!"];
   }
 })
 
-function addPet() {
+async function addPet() {
   errorMessage.value = "";
 
   try{
-    createPet({
+    const newPet = await createPet({
       petName: petName.value.trim(),
       weight: weight.value,
       age: age.value,
       gender: gender.value,
-      petCategoryId: petCategoryId.value
+      petCategoryId: Number(petCategoryId.value)
     })
+
+    pets.value.push(newPet.data);
 
     petName.value = "";
     weight.value = "";
     age.value = "";
     gender.value = "male";
-    petCategoryId.value = categories.value[0].id;
+    petCategoryId.value = categories.value[0].petCategoryId;
   }catch(e){
     errorMessage.value = e.message;
   }
@@ -94,7 +95,12 @@ function addPet() {
       <div class="field">
         <label for="petCategoryId">Pet Category: </label>
         <select v-model="petCategoryId" name="petCategoryId" id="petCategoryId">
-          <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.petType }}</option>
+          <option v-if="categories.length === 0" disabled value="">
+            Add a pet category first!
+          </option>
+          <option v-for="category in categories" :key="category.petCategoryId" :value="category.petCategoryId">
+            {{ category.petType }}
+          </option>
         </select>
       </div>
       <button v-if="isDisabled" class="btn" disabled> Add a pet category first! </button>
