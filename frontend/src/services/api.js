@@ -25,8 +25,7 @@ api.interceptors.response.use(
 
         const isAuthRoute = error.config.url.includes("/auth");
 
-        //could be 403 as well?
-        if (!isAuthRoute && error.response?.status === 401) {
+        if (!isAuthRoute && error.response?.status === 401 || error.response?.status === 403) {
             console.log("Unauthorized access... logging out user...");
             authStore.logout();
         }
